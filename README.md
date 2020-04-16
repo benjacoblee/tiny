@@ -12,6 +12,7 @@ Basically a blog.
 ## Motivations
 Learn how to set up the MEAN stack from scratch
 Learn how to use MongoDB with Mongoose 
+Learn back-end validation
 Learn new technologies(bcrypt, jsonwebtoken, etc.)
 Learn how to deploy for production
 
