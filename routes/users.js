@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const { check, validationResult } = require("express-validator");
+const bcrypt = require("bcryptjs");
+const gravatar = require("gravatar");
 const User = require("../models/user");
 
 router.post(
@@ -22,15 +24,20 @@ router.post(
     const { name, email, password } = req.body;
     let user = new User({
       name,
-      email,
-      password
+      email
     });
 
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(password, salt);
+    user.avatar = gravatar.url(email, { s: "200", r: "pg", d: "retro" });
+
     try {
-      let result = await user.save();
+      const result = await user.save();
       res.send(result);
     } catch (err) {
-      console.log(err.message);
+      res.status(400).json({
+        msg: err.message
+      });
     }
   }
 );
