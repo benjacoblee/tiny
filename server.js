@@ -1,20 +1,14 @@
 const express = require("express");
 const app = express();
-const config = require("config");
-const mongoose = require("mongoose");
+const connectDB = require("./config/connectDB");
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
-mongoose.connect(
-  config.get("mongoURI"),
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  },
-  () => {
-    console.log("Connected to mongoDB");
-  }
-);
+connectDB();
+
+app.use(express.json());
+
+app.use("/api/users", require("./routes/users"));
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
