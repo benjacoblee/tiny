@@ -6,7 +6,7 @@ Basically a blog.
 ## Technologies 
 
 ## General Approach
-Started by building back-end. Configure API endpoints for basic CRUD operations.
+Started by building back-end. Configured API endpoints for basic CRUD operations.
 
 ## Installation Instructions
 

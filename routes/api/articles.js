@@ -3,6 +3,7 @@ const router = express.Router();
 const { check, validationResult } = require("express-validator");
 const auth = require("../../middleware/auth");
 const Article = require("../../models/Article");
+const User = require("../../models/User");
 
 router.post(
   "/",
@@ -31,16 +32,18 @@ router.post(
       });
     }
 
-    let article = new Article({
-      title,
-      body,
-      tags: tagsArr,
-      userID
-    });
+    const user = await User.findById(req.user.userID);
 
     try {
-      await article.save();
-      res.json(article);
+      let article = await new Article({
+        title,
+        body,
+        tags: tagsArr,
+        postedBy: user._id
+      }).save();
+      article.populate("postedBy", (err) => {
+        res.json(article);
+      });
     } catch (err) {
       res.status(500).json({
         msg: err.message
@@ -65,9 +68,9 @@ router.patch(
       });
     }
 
-    let article = await Article.findById(req.params.id);
+    let article = await Article.findById(req.params.id).populate("postedBy");
 
-    if (req.user.userID !== article.userID) {
+    if (req.user.userID.toString() !== article.postedBy._id.toString()) {
       return res.status(400).json({
         msg: "Must be author of article to edit!"
       });
@@ -94,8 +97,7 @@ router.patch(
           dateEdited: Date.now()
         },
         { new: true }
-      );
-
+      ).populate("postedBy");
       res.json(article);
     } catch (err) {
       res.status(500).json({
