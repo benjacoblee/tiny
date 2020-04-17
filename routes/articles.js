@@ -13,14 +13,16 @@ router.post(
   ],
   async (req, res) => {
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
       return res.status(400).json({
         errors: errors.array()
       });
     }
-    const { title, body, tags } = req.body;
 
+    const { title, body, tags } = req.body;
     const { userID } = req.user;
+    
     let article = new Article({
       title,
       body,
@@ -33,9 +35,9 @@ router.post(
     try {
       await article.save();
       res.json(article);
-    } catch (error) {
+    } catch (err) {
       res.status(500).json({
-        msg: "Server error"
+        msg: err.message
       });
     }
   }
