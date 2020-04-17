@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+const commentSchema = require("./Comment");
 
-const ArticleSchema = new Schema({
+const articleSchema = new Schema({
   title: {
     type: String,
     required: true
@@ -14,10 +15,13 @@ const ArticleSchema = new Schema({
     type: Date,
     default: Date.now()
   },
+  dateEdited: Date,
   tags: [String],
-  comments: [],
+  comments: [commentSchema],
   userID: {
     type: String,
     required: true
   }
 });
+
+module.exports = mongoose.model("article", articleSchema);
