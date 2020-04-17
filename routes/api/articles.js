@@ -41,7 +41,7 @@ router.post(
         tags: tagsArr,
         postedBy: user._id
       }).save();
-      article.populate("postedBy", (err) => {
+      article.populate("postedBy", ["name"], (err) => {
         res.json(article);
       });
     } catch (err) {
@@ -97,8 +97,11 @@ router.patch(
           dateEdited: Date.now()
         },
         { new: true }
-      ).populate("postedBy");
-      res.json(article);
+      );
+
+      article.populate("postedBy", ["name"], (err) => {
+        res.json(article);
+      });
     } catch (err) {
       res.status(500).json({
         msg: err.message
