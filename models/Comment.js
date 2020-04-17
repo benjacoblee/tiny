@@ -9,9 +9,12 @@ const commentSchema = new Schema({
   dateCreated: {
     type: Date,
     default: Date.now()
-  }, 
+  },
   dateEdited: Date,
-  userID: String
+  userID: {
+    type: String,
+    required: true
+  }
 });
 
-module.exports = mongoose.model("Comment", commentSchema)
+module.exports = mongoose.model("Comment", commentSchema);

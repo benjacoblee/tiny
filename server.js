@@ -9,6 +9,7 @@ connectDB();
 app.use(express.json());
 
 app.use("/api/users", require("./routes/users"));
+app.use("/api/auth", require("./routes/auth"))
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);

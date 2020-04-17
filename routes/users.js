@@ -24,7 +24,15 @@ router.post(
     }
 
     const { name, email, password } = req.body;
-    let user = new User({
+    let user = await User.findOne({ email });
+    if (user) {
+      console.log(user)
+      return res.status(400).json({
+        msg: "User already exists!"
+      });
+    }
+
+    user = new User({
       name,
       email
     });
@@ -34,11 +42,11 @@ router.post(
     user.avatar = gravatar.url(email, { s: "200", r: "pg", d: "retro" });
 
     try {
-      const result = await user.save();
+      await user.save();
       console.log(user._id);
 
       jwt.sign(
-        {userID: user._id},
+        { userID: user._id },
         config.get("jwtSecret"),
         { expiresIn: 360000 },
         (err, token) => {
@@ -48,7 +56,7 @@ router.post(
         }
       );
     } catch (err) {
-      res.status(400).json({
+      res.status(500).json({
         msg: err.message
       });
     }
