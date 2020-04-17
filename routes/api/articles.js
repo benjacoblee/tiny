@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const { check, validationResult } = require("express-validator");
-const auth = require("../middleware/auth");
-const Article = require("../models/Article");
+const auth = require("../../middleware/auth");
+const Article = require("../../models/Article");
 
 router.post(
   "/",
@@ -22,7 +22,7 @@ router.post(
 
     const { title, body, tags } = req.body;
     const { userID } = req.user;
-    
+
     let article = new Article({
       title,
       body,
@@ -42,5 +42,7 @@ router.post(
     }
   }
 );
+
+router.put("/:id", auth, (req, res) => {});
 
 module.exports = router;
