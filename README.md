@@ -10,10 +10,11 @@ Basically a blog.
 ## Installation Instructions
 
 ## Motivations
-- Learn how to set up the MEAN stack from scratch
+- Figure out how to set up a MEAN project from scratch
 - Learn how to use MongoDB with Mongoose 
-- Learn back-end validation
-- Learn new technologies(bcrypt, jsonwebtoken, etc.)
+- Handle back-end validation
+- Familiarize with Redux and how to structure Redux store
+- Pick up new technologies(bcrypt, jsonwebtoken, etc.)
 - Learn how to deploy for production
 
 ## Unsolved Problems
