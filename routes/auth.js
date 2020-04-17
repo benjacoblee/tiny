@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const config = require("config");
 const User = require("../models/User");
 const auth = require("../middleware/auth");
 
@@ -33,12 +35,29 @@ router.post(
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     bcrypt.compare(password, user.password, (err, isMatch) => {
+      if (err) throw err;
       if (!isMatch) {
         return res.status(400).json({
           msg: "Invalid credentials provided"
         });
       }
 
+      try {
+        jwt.sign(
+          { userID: user._id },
+          config.get("jwtSecret"),
+          { expiresIn: 360000 },
+          (err, token) => {
+            res.json({
+              token
+            });
+          }
+        );
+      } catch (err) {
+        res.status(500).json({
+          msg: err.message
+        });
+      }
     });
   }
 );
