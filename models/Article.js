@@ -23,7 +23,8 @@ const articleSchema = new Schema({
   }],
   postedBy: {
     type: Schema.Types.ObjectId,
-    ref: "User"
+    ref: "User",
+    required: true
   }
 });
 
