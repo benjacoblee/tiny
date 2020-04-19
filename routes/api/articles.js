@@ -99,9 +99,25 @@ router.patch(
         { new: true }
       );
 
-      article.populate("postedBy", ["name"], (err) => {
-        res.json(article);
-      });
+      article
+        .populate({
+          path: "postedBy",
+          model: "User",
+          select: ["name"]
+        })
+        .populate(
+          {
+            path: "comments",
+            populate: {
+              path: "postedBy",
+              model: "User",
+              select: ["name"]
+            }
+          },
+          (err) => {
+            res.send(article);
+          }
+        );
     } catch (err) {
       res.status(500).json({
         msg: err.message

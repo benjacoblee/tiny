@@ -15,7 +15,6 @@ router.post(
   auth,
   [check("text", "Text cannot be empty!").not().isEmpty()],
   async (req, res) => {
-    
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -38,22 +37,25 @@ router.post(
       article.comments = [...article.comments, comment._id];
       await article.save();
 
-      article = await Article.findById(id)
-        .populate({
-          path: "comments",
-          populate: {
-            path: "postedBy",
-            model: "User",
-            select: ["name"]
-          }
-        })
+      article
         .populate({
           path: "postedBy",
           model: "User",
           select: ["name"]
-        });
-
-      res.json(article);
+        })
+        .populate(
+          {
+            path: "comments",
+            populate: {
+              path: "postedBy",
+              model: "User",
+              select: ["name"]
+            }
+          },
+          (err) => {
+            res.send(article);
+          }
+        );
     } catch (err) {
       console.log(err);
       res.status(500).json({
