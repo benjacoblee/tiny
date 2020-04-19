@@ -17,7 +17,10 @@ const articleSchema = new Schema({
   },
   dateEdited: Date,
   tags: [String],
-  comments: [commentSchema],
+  comments: [{
+    type: Schema.Types.ObjectId,
+    ref: "Comment"
+  }],
   postedBy: {
     type: Schema.Types.ObjectId,
     ref: "User"
