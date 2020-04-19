@@ -11,8 +11,9 @@ const commentSchema = new Schema({
     default: Date.now()
   },
   dateEdited: Date,
-  userID: {
-    type: String,
+  postedBy: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
     required: true
   }
 });
