@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
-const commentSchema = require("./Comment");
 
 const articleSchema = new Schema({
   title: {
