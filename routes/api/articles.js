@@ -5,6 +5,54 @@ const auth = require("../../middleware/auth");
 const Article = require("../../models/Article");
 const User = require("../../models/User");
 
+router.get("/", async (req, res) => {
+  // just returns all articles for now. might need to use req.query for pagination or to find articles by tag
+  try {
+    const articles = await Article.find({})
+      .populate({
+        path: "postedBy",
+        model: "User",
+        select: ["name"]
+      })
+      .populate({
+        path: "comments",
+        populate: {
+          path: "postedBy",
+          model: "User",
+          select: ["name"]
+        }
+      });
+    res.json(articles);
+  } catch (err) {
+    res.json(err);
+  }
+});
+
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const article = await Article.findById(id)
+      .populate({
+        path: "postedBy",
+        model: "User",
+        select: ["name"]
+      })
+      .populate({
+        path: "comments",
+        populate: {
+          path: "postedBy",
+          model: "User",
+          select: ["name"]
+        }
+      });
+    res.json(article);
+  } catch (err) {
+    res.status(500).json({
+      err: err.message
+    });
+  }
+});
+
 router.post(
   "/",
   auth,
