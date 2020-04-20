@@ -22,14 +22,14 @@ router.post(
     const { id } = req.params;
     const { text } = req.body;
 
-    let article = await Article.findById(id);
-    const comment = new Comment({
-      text,
-      postedBy: req.user.userID,
-      articleID: article._id
-    });
-
     try {
+      let article = await Article.findById(id);
+      const comment = new Comment({
+        text,
+        postedBy: req.user.userID,
+        articleID: article._id
+      });
+
       await comment.save();
       article.comments = [...article.comments, comment._id];
       await article.save();
@@ -77,21 +77,22 @@ router.patch(
       });
     }
 
-    let comment = await Comment.findById(commentID);
-
-    if (req.user.userID !== comment.postedBy.toString()) {
-      return res.status(400).json({
-        msg: "Only owner of comment can edit!"
-      });
-    }
-
-    const text = req.body.text;
-
-    comment.text = text;
-
-    await comment.save();
-
     try {
+      let comment = await Comment.findById(commentID);
+
+      if (req.user.userID !== comment.postedBy.toString()) {
+        return res.status(400).json({
+          msg: "Only owner of comment can edit!"
+        });
+      }
+
+      const text = req.body.text;
+
+      comment.text = text;
+      comment.dateEdited = Date.now();
+
+      await comment.save();
+
       let article = await Article.findById(id)
         .populate({
           path: "postedBy",
@@ -119,15 +120,16 @@ router.patch(
 router.delete("/:commentID", auth, async (req, res) => {
   const { id, commentID } = req.params;
 
-  let article = await Article.findById(id);
-  const comment = await Comment.findById(commentID);
-
-  if (req.user.userID !== comment.postedBy.toString()) {
-    return res.status(400).json({
-      msg: "Only owner of comment can delete!"
-    });
-  } else {
     try {
+       let article = await Article.findById(id);
+       const comment = await Comment.findById(commentID);
+
+       if (req.user.userID !== comment.postedBy.toString()) {
+         return res.status(400).json({
+           msg: "Only owner of comment can delete!"
+         });
+       } 
+       
       await Comment.findByIdAndDelete(commentID);
 
       article.comments = article.comments.filter((comment) => {
@@ -157,7 +159,7 @@ router.delete("/:commentID", auth, async (req, res) => {
         msg: err.message
       });
     }
-  }
+  
 });
 
 module.exports = router;
