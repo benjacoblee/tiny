@@ -25,7 +25,8 @@ router.post(
     let article = await Article.findById(id);
     const comment = new Comment({
       text,
-      postedBy: req.user.userID
+      postedBy: req.user.userID,
+      articleID: article._id
     });
 
     try {

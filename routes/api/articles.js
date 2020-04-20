@@ -4,6 +4,7 @@ const { check, validationResult } = require("express-validator");
 const auth = require("../../middleware/auth");
 const Article = require("../../models/Article");
 const User = require("../../models/User");
+const Comment = require("../../models/Comment");
 
 router.get("/", async (req, res) => {
   // just returns all articles for now. might need to use req.query for pagination or to find articles by tag
@@ -173,5 +174,26 @@ router.patch(
     }
   }
 );
+
+router.delete("/:id", auth, async (req, res) => {
+  const { id } = req.params;
+  const article = await Article.findById(id);
+
+  if (req.user.userID !== article.postedBy.toString()) {
+    res.status(400).json({
+      msg: "You don't have the permissions to delete this comment!"
+    });
+  }
+
+  try {
+    await Article.findByIdAndDelete(id);
+    await Comment.deleteMany({ articleID: article._id });
+    res.send("Article deleted");
+  } catch (err) {
+    res.status(500).json({
+      msg: err.message
+    });
+  }
+});
 
 module.exports = router;
