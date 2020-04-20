@@ -46,11 +46,22 @@ router.get("/:id", async (req, res) => {
           select: ["name"]
         }
       });
+
+    if (!article) {
+      return res.json({
+        msg: "Article doesn't exist"
+      });
+    }
+
     res.json(article);
   } catch (err) {
-    res.status(500).json({
-      err: err.message
-    });
+    if (err.name === "CastError") {
+      return res.status(404).json({
+        msg: "Article dosen't exist"
+      });
+    }
+
+    return res.status(500).send("Server error");
   }
 });
 
@@ -71,7 +82,6 @@ router.post(
     }
 
     const { title, body, tags } = req.body;
-    const { userID } = req.user;
 
     let tagsArr = [];
 
@@ -81,9 +91,8 @@ router.post(
       });
     }
 
-    const user = await User.findById(req.user.userID);
-
     try {
+      const user = await User.findById(req.user.userID);
       let article = await new Article({
         title,
         body,
@@ -117,24 +126,24 @@ router.patch(
       });
     }
 
-    let article = await Article.findById(req.params.id).populate("postedBy");
-
-    if (req.user.userID !== article.postedBy._id.toString()) {
-      return res.status(400).json({
-        msg: "Must be author of article to edit!"
-      });
-    }
-
-    const { title, body, tags } = req.body;
-    let tagsArr = [];
-
-    if (tags) {
-      tagsArr = tags.split(",").map((tag) => {
-        return tag.trim();
-      });
-    }
-
     try {
+      let article = await Article.findById(req.params.id).populate("postedBy");
+
+      if (req.user.userID !== article.postedBy._id.toString()) {
+        return res.status(400).json({
+          msg: "Must be author of article to edit!"
+        });
+      }
+
+      const { title, body, tags } = req.body;
+      let tagsArr = [];
+
+      if (tags) {
+        tagsArr = tags.split(",").map((tag) => {
+          return tag.trim();
+        });
+      }
+
       article = await Article.findOneAndUpdate(
         {
           _id: req.params.id
@@ -177,15 +186,16 @@ router.patch(
 
 router.delete("/:id", auth, async (req, res) => {
   const { id } = req.params;
-  const article = await Article.findById(id);
-
-  if (req.user.userID !== article.postedBy.toString()) {
-    res.status(400).json({
-      msg: "You don't have the permissions to delete this comment!"
-    });
-  }
 
   try {
+    const article = await Article.findById(id);
+    console.log(article);
+    if (req.user.userID !== article.postedBy.toString()) {
+      return res.status(400).json({
+        msg: "You don't have the permissions to delete this comment!"
+      });
+    }
+
     await Article.findByIdAndDelete(id);
     await Comment.deleteMany({ articleID: article._id });
     res.send("Article deleted");
