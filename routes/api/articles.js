@@ -119,7 +119,7 @@ router.patch(
 
     let article = await Article.findById(req.params.id).populate("postedBy");
 
-    if (req.user.userID.toString() !== article.postedBy._id.toString()) {
+    if (req.user.userID !== article.postedBy._id.toString()) {
       return res.status(400).json({
         msg: "Must be author of article to edit!"
       });
