@@ -6,10 +6,6 @@ const auth = require("../../middleware/auth");
 const Article = require("../../models/Article");
 const Comment = require("../../models/Comment");
 
-router.get("/", auth, (req, res) => {
-  // get all comments for this article
-});
-
 router.post(
   "/",
   auth,
@@ -66,12 +62,101 @@ router.post(
   }
 );
 
-router.patch("/:id", auth, (req, res) => {
-  // edit comment
-});
+router.patch(
+  "/:commentID",
+  auth,
+  [check("text", "Text must not be empty!").not().isEmpty()],
+  async (req, res) => {
+    const errors = validationResult(req);
+    const { id, commentID } = req.params;
 
-router.delete("/:id", auth, (req, res) => {
-  // delete comment
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        errors: errors.array()
+      });
+    }
+
+    let comment = await Comment.findById(commentID);
+
+    if (req.user.userID !== comment.postedBy.toString()) {
+      return res.status(400).json({
+        msg: "Only owner of comment can edit!"
+      });
+    }
+
+    const text = req.body.text;
+
+    comment.text = text;
+
+    await comment.save();
+
+    try {
+      let article = await Article.findById(id)
+        .populate({
+          path: "postedBy",
+          select: ["name"],
+          model: "User"
+        })
+        .populate({
+          path: "comments",
+          populate: {
+            path: "postedBy",
+            select: ["name"],
+            model: "User"
+          }
+        });
+
+      res.json(article);
+    } catch (err) {
+      res.status(500).json({
+        msg: err.message
+      });
+    }
+  }
+);
+
+router.delete("/:commentID", auth, async (req, res) => {
+  const { id, commentID } = req.params;
+
+  let article = await Article.findById(id);
+  const comment = await Comment.findById(commentID);
+
+  if (req.user.userID !== comment.postedBy.toString()) {
+    return res.status(400).json({
+      msg: "Only owner of comment can delete!"
+    });
+  } else {
+    try {
+      await Comment.findByIdAndDelete(commentID);
+
+      article.comments = article.comments.filter((comment) => {
+        return comment._id.toString() !== commentID;
+      });
+
+      article = await article.save();
+      article
+        .populate({
+          path: "postedBy",
+          select: ["name"]
+        })
+        .populate(
+          {
+            path: "comments",
+            populate: {
+              path: "postedBy",
+              select: ["name"]
+            }
+          },
+          (err) => {
+            res.json(article);
+          }
+        );
+    } catch (err) {
+      res.status(500).json({
+        msg: err.message
+      });
+    }
+  }
 });
 
 module.exports = router;
