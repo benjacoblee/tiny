@@ -37,7 +37,7 @@ router.post(
       if (err) throw err;
       if (!isMatch) {
         return res.status(400).json({
-          msg: "Invalid credentials provided"
+          msg: "Invalid credentials"
         });
       }
 
