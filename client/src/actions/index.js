@@ -7,6 +7,15 @@ import {
   LOGOUT_USER
 } from "./types";
 
+const clearAlert = (type) => (dispatch) => {
+  setTimeout(() => {
+    dispatch({
+      type,
+      payload: ""
+    });
+  }, 2000);
+};
+
 export const authUser = (loginDetails) => async (dispatch) => {
   try {
     let response = await axios.post("/api/auth", loginDetails);
@@ -18,6 +27,8 @@ export const authUser = (loginDetails) => async (dispatch) => {
         token: response.data
       }
     });
+
+    clearAlert(AUTH_USER)(dispatch);
   } catch (err) {
     console.log(err.response);
     dispatch({
@@ -25,12 +36,7 @@ export const authUser = (loginDetails) => async (dispatch) => {
       payload: { alerts: err.response.data.errors, variant: "danger" }
     });
 
-    setTimeout(() => {
-      dispatch({
-        type: AUTH_USER,
-        payload: ""
-      });
-    }, 5000);
+    clearAlert(AUTH_USER)(dispatch);
   }
 
   // return {
@@ -39,16 +45,17 @@ export const authUser = (loginDetails) => async (dispatch) => {
   // };
 };
 
-export const logoutUser = () => {
-  console.log("HELLO DISPATCHING")
-  return {
+export const logoutUser = () => async (dispatch) => {
+  dispatch({
     type: LOGOUT_USER,
     payload: {
       alerts: [{ msg: "Successfully logged out!" }],
       variant: "success",
       token: null
     }
-  };
+  });
+
+  clearAlert(LOGOUT_USER)(dispatch);
 };
 
 export const registerUser = (loginDetails) => async (dispatch) => {
@@ -69,12 +76,7 @@ export const registerUser = (loginDetails) => async (dispatch) => {
       payload: { alerts: err.response.data.errors, variant: "danger" }
     });
 
-    setTimeout(() => {
-      dispatch({
-        type: REGISTER_USER,
-        payload: ""
-      });
-    }, 5000);
+    clearAlert(REGISTER_USER)(dispatch);
   }
 
   // return {
