@@ -4,6 +4,12 @@ import { connect } from "react-redux";
 import * as actions from "../actions";
 
 const ArticleForm = (props) => {
+  const token = sessionStorage.getItem("jwtToken");
+
+  if (!token) {
+    props.history.push("/");
+  }
+
   const [formData, updateFormData] = useState({
     title: "",
     body: "",

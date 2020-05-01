@@ -74,5 +74,8 @@ export const submitArticle = (articleDetails) => async (dispatch) => {
     }
   });
 
-  console.log(response);
+  dispatch({
+    type: SUBMIT_ARTICLE,
+    payload: response.data
+  });
 };
