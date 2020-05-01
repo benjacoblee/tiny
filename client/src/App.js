@@ -6,6 +6,7 @@ import Header from "./components/layout/Header";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import ArticleForm from "./components/ArticleForm";
+import Article from "./components/Article";
 import Alerts from "./components/Alerts";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
@@ -25,7 +26,10 @@ const App = (props) => {
         <Container>
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
-          <Route exact path="/articles/new" component={ArticleForm} />
+          <Switch>
+            <Route exact path="/articles/new" component={ArticleForm} />
+            <Route exact path="/articles/:id" component={Article} />
+          </Switch>
         </Container>
       </div>
     </Router>

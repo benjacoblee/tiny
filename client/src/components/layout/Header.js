@@ -10,10 +10,8 @@ import {
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-const Header = (props) => {
+const Header = () => {
   const token = sessionStorage.getItem("jwtToken");
-  // useEffect(() => {}, [props.auth]);
-  console.log(token);
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Navbar.Brand as={Link} to="/">

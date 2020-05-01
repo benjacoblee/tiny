@@ -1,9 +1,14 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
 import { connect } from "react-redux";
 import * as actions from "../actions";
 
 const ArticleForm = (props) => {
+  useEffect(() => {
+    if (props.article.length > 0) {
+      props.history.push(`/articles/${props.article[0]._id}`);
+    }
+  }, [props.article]);
   const token = sessionStorage.getItem("jwtToken");
 
   if (!token) {
@@ -70,4 +75,8 @@ const ArticleForm = (props) => {
   );
 };
 
-export default connect(null, actions)(ArticleForm);
+const mapStateToProps = (state) => {
+  return { article: state.articles };
+};
+
+export default connect(mapStateToProps, actions)(ArticleForm);

@@ -1,5 +1,10 @@
 import axios from "axios";
-import { AUTH_USER, REGISTER_USER, SUBMIT_ARTICLE } from "./types";
+import {
+  AUTH_USER,
+  REGISTER_USER,
+  SUBMIT_ARTICLE,
+  FETCH_ARTICLE
+} from "./types";
 
 export const authUser = (loginDetails) => async (dispatch) => {
   try {
@@ -66,6 +71,7 @@ export const registerUser = (loginDetails) => async (dispatch) => {
 };
 
 export const submitArticle = (articleDetails) => async (dispatch) => {
+  console.log("IN HERE BRO")
   const token = sessionStorage.getItem("jwtToken");
   let response = await axios.post("/api/articles", articleDetails, {
     headers: {
@@ -76,6 +82,14 @@ export const submitArticle = (articleDetails) => async (dispatch) => {
 
   dispatch({
     type: SUBMIT_ARTICLE,
+    payload: response.data
+  });
+};
+
+export const fetchArticle = (id) => async (dispatch) => {
+  let response = await axios.get(`/api/articles/${id}`);
+  dispatch({
+    type: FETCH_ARTICLE,
     payload: response.data
   });
 };
