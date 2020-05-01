@@ -5,8 +5,9 @@ import * as actions from "../actions";
 
 const ArticleForm = (props) => {
   useEffect(() => {
-    if (props.article.length > 0) {
-      props.history.push(`/articles/${props.article[0]._id}`);
+    console.log(props.article);
+    if (props.article.id) {
+      props.history.push(`/articles/${props.article.id}`);
     }
   }, [props.article]);
   const token = sessionStorage.getItem("jwtToken");
@@ -76,7 +77,7 @@ const ArticleForm = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  return { article: state.articles };
+  return { article: state.article };
 };
 
 export default connect(mapStateToProps, actions)(ArticleForm);

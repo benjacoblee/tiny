@@ -5,11 +5,8 @@ import * as actions from "../actions";
 const Article = (props) => {
   const { id } = props.match.params;
   useEffect(() => {
-    console.log(props.article);
-    if (Array.isArray(props.article)) {
-      props.fetchArticle(id);
-    }
-  }, [props.article]);
+    props.fetchArticle(id);
+  }, []);
 
   if (props.article.title) {
     let { title, postedBy, dateCreated, body } = props.article;
@@ -28,7 +25,7 @@ const Article = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  return { article: state.articles };
+  return { article: state.article };
 };
 
 export default connect(mapStateToProps, actions)(Article);

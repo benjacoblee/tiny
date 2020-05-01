@@ -71,7 +71,7 @@ export const registerUser = (loginDetails) => async (dispatch) => {
 };
 
 export const submitArticle = (articleDetails) => async (dispatch) => {
-  console.log("IN HERE BRO")
+  console.log("IN HERE BRO");
   const token = sessionStorage.getItem("jwtToken");
   let response = await axios.post("/api/articles", articleDetails, {
     headers: {
@@ -82,7 +82,7 @@ export const submitArticle = (articleDetails) => async (dispatch) => {
 
   dispatch({
     type: SUBMIT_ARTICLE,
-    payload: response.data
+    payload: response.data._id
   });
 };
 
