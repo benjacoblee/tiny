@@ -3,7 +3,8 @@ import {
   AUTH_USER,
   REGISTER_USER,
   SUBMIT_ARTICLE,
-  FETCH_ARTICLE
+  FETCH_ARTICLE,
+  LOGOUT_USER
 } from "./types";
 
 export const authUser = (loginDetails) => async (dispatch) => {
@@ -36,6 +37,18 @@ export const authUser = (loginDetails) => async (dispatch) => {
   //   type: AUTH_USER,
   //   payload: loginDetails
   // };
+};
+
+export const logoutUser = () => {
+  console.log("HELLO DISPATCHING")
+  return {
+    type: LOGOUT_USER,
+    payload: {
+      alerts: [{ msg: "Successfully logged out!" }],
+      variant: "success",
+      token: null
+    }
+  };
 };
 
 export const registerUser = (loginDetails) => async (dispatch) => {

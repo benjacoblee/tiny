@@ -9,7 +9,7 @@ const Register = (props) => {
     if (props.auth.token) {
       return props.history.push("/");
     }
-  }, [props.auth]);
+  }, [props.auth, props.history]);
 
   const [formData, updateFormData] = useState({
     email: "",

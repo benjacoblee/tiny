@@ -9,7 +9,7 @@ const ArticleForm = (props) => {
     if (props.article.id) {
       props.history.push(`/articles/${props.article.id}`);
     }
-  }, [props.article]);
+  }, [props.article, props.history]);
   const token = sessionStorage.getItem("jwtToken");
 
   if (!token) {
