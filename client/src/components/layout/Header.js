@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import {
   Navbar,
   Nav,
@@ -10,18 +10,32 @@ import {
 import { Link } from "react-router-dom";
 
 const Header = () => {
+  const token = sessionStorage.getItem("jwtToken");
+  console.log(token);
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-      <Navbar.Brand as={Link} to="/">Tiny</Navbar.Brand>
+      <Navbar.Brand as={Link} to="/">
+        Tiny
+      </Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="mr-auto">
-          <Nav.Link as={Link} to="/login">
-            Login
-          </Nav.Link>
-          <Nav.Link as={Link} to="/register">
-            Register
-          </Nav.Link>
+          {!token ? (
+            <Fragment>
+              <Nav.Link as={Link} to="/login">
+                Login
+              </Nav.Link>
+              <Nav.Link as={Link} to="/register">
+                Register
+              </Nav.Link>
+            </Fragment>
+          ) : (
+            <Fragment>
+              <Nav.Link as={Link} to="/articles/new">
+                Write
+              </Nav.Link>
+            </Fragment>
+          )}
           {/*<NavDropdown title="Dropdown" id="collasible-nav-dropdown">
             <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
             <NavDropdown.Item href="#action/3.2">

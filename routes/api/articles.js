@@ -73,6 +73,7 @@ router.post(
     check("body", "Body is required!").not().isEmpty()
   ],
   async (req, res) => {
+    console.log("I AM HERHERHEHRHEHREHHRHEH")
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {

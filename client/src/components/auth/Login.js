@@ -1,10 +1,17 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import * as actions from "../../actions";
+import Alerts from "../Alerts";
 
 const Login = (props) => {
+  useEffect(() => {
+    if (props.auth.token) {
+      return props.history.push("/");
+    }
+  }, [props.auth]);
+
   const [formData, updateFormData] = useState({
     email: "",
     password: ""
@@ -73,4 +80,8 @@ const Login = (props) => {
   );
 };
 
-export default connect(null, actions)(Login);
+const mapStateToProps = (state) => {
+  return { auth: state.auth };
+};
+
+export default connect(mapStateToProps, actions)(Login);

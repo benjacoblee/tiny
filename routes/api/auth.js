@@ -21,9 +21,9 @@ router.get("/", auth, async (req, res) => {
 router.post(
   "/",
   [
-    check("email", "Needs to be a valid email").isEmail(),
+    check("email", "Email must be valid!").isEmail(),
     check("password", "Password cannot be empty!").not().isEmpty(),
-    check("password", "Password supplied is too short").isLength({ min: 6 })
+    check("password", "Password supplied is too short!").isLength({ min: 6 })
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -32,32 +32,41 @@ router.post(
     }
 
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
-    bcrypt.compare(password, user.password, (err, isMatch) => {
-      if (err) throw err;
-      if (!isMatch) {
-        return res.status(400).json({
-          msg: "Invalid credentials"
-        });
-      }
+    let user;
+    try {
+      user = await User.findOne({ email });
+      bcrypt.compare(password, user.password, (err, isMatch) => {
+        if (err) throw err;
+        if (!isMatch) {
+          return res.status(400).json({
+            errors: [
+              {
+                msg: "Invalid credentials"
+              }
+            ]
+          });
+        }
 
-      try {
-        jwt.sign(
-          { userID: user._id },
-          config.get("jwtSecret"),
-          { expiresIn: 360000 },
-          (err, token) => {
-            res.json({
-              token
-            });
-          }
-        );
-      } catch (err) {
-        res.status(500).json({
-          msg: err.message
-        });
-      }
-    });
+        try {
+          jwt.sign(
+            { userID: user._id },
+            config.get("jwtSecret"),
+            { expiresIn: 360000 },
+            (err, token) => {
+              res.json({
+                token
+              });
+            }
+          );
+        } catch (err) {
+          res.status(500).json({
+            errors: [{ msg: err.message }]
+          });
+        }
+      });
+    } catch (err) {
+      return res.status(400).json({ errors: [{ msg: "Invalid credentials" }] });
+    }
   }
 );
 

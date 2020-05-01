@@ -1,8 +1,16 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { Form, Button } from "react-bootstrap";
+import { connect } from "react-redux";
+import * as actions from "../../actions";
 // import { Link } from "react-router-dom";
 
-const Register = () => {
+const Register = (props) => {
+  useEffect(() => {
+    if (props.auth.token) {
+      return props.history.push("/");
+    }
+  }, [props.auth]);
+
   const [formData, updateFormData] = useState({
     email: "",
     password: "",
@@ -18,7 +26,7 @@ const Register = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     if (password === password2) {
-      return console.log("WE NEED TO SUBMIT");
+      props.registerUser(formData);
     }
   };
 
@@ -75,4 +83,8 @@ const Register = () => {
   );
 };
 
-export default Register;
+const mapStateToProps = (state) => {
+  return { auth: state.auth };
+};
+
+export default connect(mapStateToProps, actions)(Register);
