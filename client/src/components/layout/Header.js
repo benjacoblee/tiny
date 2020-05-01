@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import {
   Navbar,
   Nav,
@@ -7,10 +7,12 @@ import {
   FormControl,
   Button
 } from "react-bootstrap";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-const Header = () => {
+const Header = (props) => {
   const token = sessionStorage.getItem("jwtToken");
+  // useEffect(() => {}, [props.auth]);
   console.log(token);
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -58,4 +60,8 @@ const Header = () => {
   );
 };
 
-export default Header;
+const mapStateToProps = (state) => {
+  return { auth: state.auth };
+};
+
+export default connect(mapStateToProps, {})(Header);

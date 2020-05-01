@@ -3,7 +3,6 @@ import { Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import * as actions from "../../actions";
-import Alerts from "../Alerts";
 
 const Login = (props) => {
   useEffect(() => {

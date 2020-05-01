@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import { Container } from "react-bootstrap";
@@ -11,14 +11,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 const App = (props) => {
-  let token = sessionStorage.getItem("jwtToken");
-  if (!token) {
-    token = sessionStorage.setItem(
-      "jwtToken",
-      JSON.stringify(props.auth.token)
-    );
-    console.log(token);
-  }
+  useEffect(() => {
+    if (props.auth.token !== undefined) {
+      const { token } = props.auth.token;
+      sessionStorage.setItem("jwtToken", token);
+    }
+  }, [props.auth]);
   return (
     <Router>
       <div className="App">

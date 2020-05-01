@@ -12,9 +12,6 @@ export const authUser = (loginDetails) => async (dispatch) => {
         token: response.data
       }
     });
-    const jwtToken = JSON.stringify(response.data);
-    sessionStorage.setItem("jwtToken", jwtToken);
-    console.log(sessionStorage.getItem("jwtToken"));
   } catch (err) {
     console.log(err.response);
     dispatch({
@@ -47,7 +44,6 @@ export const registerUser = (loginDetails) => async (dispatch) => {
         token: response.data
       }
     }); // get token, keep somewhere
-    sessionStorage.setItem("jwtToken", response.data);
   } catch (err) {
     console.log(err);
     dispatch({
@@ -70,8 +66,7 @@ export const registerUser = (loginDetails) => async (dispatch) => {
 };
 
 export const submitArticle = (articleDetails) => async (dispatch) => {
-  console.log(sessionStorage.getItem("jwtToken"));
-  const token = JSON.parse(sessionStorage.getItem("jwtToken")).token;
+  const token = sessionStorage.getItem("jwtToken");
   let response = await axios.post("/api/articles", articleDetails, {
     headers: {
       "Content-Type": "application/json",
