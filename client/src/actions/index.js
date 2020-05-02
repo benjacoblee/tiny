@@ -4,6 +4,7 @@ import {
   REGISTER_USER,
   SUBMIT_ARTICLE,
   FETCH_ARTICLE,
+  FETCH_ARTICLES,
   LOGOUT_USER
 } from "./types";
 
@@ -107,4 +108,16 @@ export const fetchArticle = (id) => async (dispatch) => {
     type: FETCH_ARTICLE,
     payload: response.data
   });
+};
+
+export const fetchArticles = () => async (dispatch) => {
+  try {
+    let response = await axios.get("/api/articles");
+    dispatch({
+      type: FETCH_ARTICLES,
+      payload: response.data
+    });
+  } catch (err) {
+    console.error(err);
+  }
 };

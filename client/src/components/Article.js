@@ -17,7 +17,7 @@ const Article = (props) => {
         <div className="mt-3">
           <h5>{title}</h5>
           <h6>
-            Posted by: {postedBy.name} {" "}
+            {postedBy.name}{" "}
             <small>
               <Moment format="DD MMM YYYY">{dateCreated}</Moment>
             </small>{" "}

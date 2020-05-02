@@ -12,6 +12,7 @@ import Header from "./components/layout/Header";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import ArticleForm from "./components/ArticleForm";
+import Articles from "./components/Articles";
 import Article from "./components/Article";
 import Alerts from "./components/Alerts";
 import Logout from "./components/auth/Logout";
@@ -31,6 +32,7 @@ const App = (props) => {
         <Header />
         <Alerts alerts={props.auth.alerts} variant={props.auth.variant} />
         <Container>
+          <Route exact path="/" component={Articles} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Switch>
