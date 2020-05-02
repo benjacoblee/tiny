@@ -10,7 +10,13 @@ const Articles = (props) => {
   const renderArticles = () => {
     if (props.articles.length > 0) {
       return props.articles.map((article) => {
-        return <p>{article.title}</p>;
+        return (
+          <div>
+            <a href={`/articles/${article._id}`}>
+              <p>{article.title}</p>
+            </a>
+          </div>
+        );
       });
     }
     return <p>Spinner</p>;
