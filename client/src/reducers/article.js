@@ -7,6 +7,7 @@ export default (state = {}, action) => {
       return { ...state, id: action.payload };
     case FETCH_ARTICLE:
       console.log("fetching article");
+      console.log(action.payload)
       return action.payload;
     default:
       return state;

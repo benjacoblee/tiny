@@ -5,6 +5,7 @@ import * as actions from "../actions";
 const Articles = (props) => {
   useEffect(() => {
     props.fetchArticles();
+    console.log(props.articles);
   }, []);
 
   const renderArticles = () => {
