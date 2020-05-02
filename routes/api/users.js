@@ -27,7 +27,7 @@ router.post(
     let user = await User.findOne({ email });
     if (user) {
       // console.log(user)
-      console.log("IN THIS BLOCK")
+      console.log("IN THIS BLOCK");
       return res.status(400).json({
         errors: [
           {
@@ -61,7 +61,7 @@ router.post(
         }
       );
     } catch (err) {
-      console.log(err)
+      console.log(err);
       res.status(500).json({
         msg: err.message
       });
