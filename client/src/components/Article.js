@@ -9,10 +9,11 @@ const Article = (props) => {
   useEffect(() => {
     props.fetchArticle(id);
     const token = sessionStorage.getItem("jwtToken");
-    props.fetchUser(token);
+    props.fetchUser(token); // take auth id and compare to postedby id
   }, []);
 
   if (props.article.title) {
+    const isAuthor = props.article.postedBy._id === props.auth._id;
     let { title, postedBy, dateCreated, body } = props.article;
     return (
       <div>
@@ -25,6 +26,7 @@ const Article = (props) => {
             </small>{" "}
           </h6>
           <p>{body}</p>
+          {isAuthor ? <a href="something">Edit Article</a> : null}
         </div>
       </div>
     );

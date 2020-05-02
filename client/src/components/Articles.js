@@ -15,7 +15,7 @@ const Articles = (props) => {
     if (props.articles.length > 0) {
       return props.articles.map((article) => {
         return (
-          <Card className="my-3">
+          <Card key={article._id} className="my-3">
             <Card.Body>
               <Card.Title>{article.title} </Card.Title>
               <Card.Subtitle className="mb-2">
