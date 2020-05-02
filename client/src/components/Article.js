@@ -38,7 +38,7 @@ const Article = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  return { article: state.article };
+  return { article: state.article, auth: state.auth };
 };
 
 export default connect(mapStateToProps, actions)(Article);

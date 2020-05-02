@@ -94,7 +94,10 @@ export const fetchUser = (token) => async (dispatch) => {
       "x-auth-token": token
     }
   });
-  console.log(response.data); //
+  dispatch({
+    type: FETCH_USER,
+    payload: response.data
+  });
 };
 
 export const submitArticle = (articleDetails) => async (dispatch) => {
