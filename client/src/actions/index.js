@@ -2,6 +2,7 @@ import axios from "axios";
 import {
   AUTH_USER,
   REGISTER_USER,
+  FETCH_USER,
   SUBMIT_ARTICLE,
   FETCH_ARTICLE,
   FETCH_ARTICLES,
@@ -84,6 +85,16 @@ export const registerUser = (loginDetails) => async (dispatch) => {
   //   type: AUTH_USER,
   //   payload: loginDetails
   // };
+};
+
+export const fetchUser = (token) => async (dispatch) => {
+  console.log(token);
+  let response = await axios.get("/api/auth", {
+    headers: {
+      "x-auth-token": token
+    }
+  });
+  console.log(response.data); //
 };
 
 export const submitArticle = (articleDetails) => async (dispatch) => {

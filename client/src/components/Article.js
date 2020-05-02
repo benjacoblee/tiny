@@ -8,6 +8,8 @@ const Article = (props) => {
   const { id } = props.match.params;
   useEffect(() => {
     props.fetchArticle(id);
+    const token = sessionStorage.getItem("jwtToken");
+    props.fetchUser(token);
   }, []);
 
   if (props.article.title) {

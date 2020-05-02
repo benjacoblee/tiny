@@ -4,3 +4,4 @@ export const REGISTER_USER = "REGISTER_USER";
 export const SUBMIT_ARTICLE = "SUBMIT_ARTICLE";
 export const FETCH_ARTICLE = "FETCH_ARTICLE";
 export const FETCH_ARTICLES = "FETCH_ARTICLES";
+export const FETCH_USER = "FETCH_USER"
