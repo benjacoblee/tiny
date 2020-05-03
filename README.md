@@ -7,6 +7,8 @@ Basically a blog.
 
 ## General Approach
 Started by building back-end. Configured API endpoints for basic CRUD operations.
+After verifying REST routes were working via Postman, started working on the front-end.
+Workflow consisted of React component creation; writing actions and action types; then creating reducers.
 
 ## Installation Instructions
 
