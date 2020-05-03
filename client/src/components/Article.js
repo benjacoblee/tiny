@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -9,10 +9,23 @@ import * as actions from "../actions";
 const Article = (props) => {
   const { id } = props.match.params;
   const token = sessionStorage.getItem("jwtToken");
+  const [formData, updateFormData] = useState({
+    body: ""
+  });
   useEffect(() => {
     props.fetchArticle(id);
     props.fetchUser(token); // take auth id and compare to postedby id
   }, []);
+
+  const handleChange = (e) => {
+    updateFormData({ [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData); // post formData
+    // need action to handle post comment
+  };
 
   if (props.article.title) {
     const isAuthor = props.article.postedBy._id === props.auth._id;
@@ -39,12 +52,20 @@ const Article = (props) => {
             </p>
           ) : null}
           {token ? (
-            <Form>
+            <Form onSubmit={handleSubmit}>
               <Form.Group controlId="exampleForm.ControlTextarea1">
                 <Form.Label>Post a comment</Form.Label>
-                <Form.Control as="textarea" rows="3" />
+                <Form.Control
+                  as="textarea"
+                  rows="3"
+                  name="body"
+                  value={formData.body}
+                  onChange={handleChange}
+                />
               </Form.Group>
-              <Button>Submit</Button>
+              <Button variant="primary" type="submit">
+                Submit
+              </Button>
             </Form>
           ) : null}
         </div>
