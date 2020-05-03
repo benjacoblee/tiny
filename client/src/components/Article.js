@@ -21,7 +21,7 @@ const Article = (props) => {
         <div className="mt-3">
           <h5>{title}</h5>
           <h6>
-            {postedBy.name}{" "}
+            {postedBy.name ? postedBy.name : postedBy.email }{" "}
             <small>
               {dateEdited ? "edited " : null}
               <Moment format="DD MMM YYYY">

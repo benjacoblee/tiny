@@ -36,7 +36,7 @@ router.get("/:id", async (req, res) => {
       .populate({
         path: "postedBy",
         model: "User",
-        select: ["name"]
+        select: ["name", "email"]
       })
       .populate({
         path: "comments",
