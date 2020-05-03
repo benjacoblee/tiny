@@ -6,13 +6,13 @@ const Comments = (props) => {
       console.log("HAPPENING")
       return props.comments.map((comment) => {
         return (
-          <div>
+          <div key={comment._id}>
             <p>
               {comment.postedBy.name
                 ? comment.postedBy.name
                 : comment.postedBy.email}
             </p>
-            <p key={comment._id}>{comment.text}</p>
+            <p>{comment.text}</p>
           </div>
         );
       });
