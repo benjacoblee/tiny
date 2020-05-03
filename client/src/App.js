@@ -12,6 +12,7 @@ import Header from "./components/layout/Header";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import ArticleForm from "./components/ArticleForm";
+import EditArticleForm from "./components/EditArticleForm";
 import Articles from "./components/Articles";
 import Article from "./components/Article";
 import Alerts from "./components/Alerts";
@@ -37,6 +38,11 @@ const App = (props) => {
           <Route exact path="/register" component={Register} />
           <Switch>
             <Route exact path="/articles/new" component={ArticleForm} />
+            <Route
+              exact
+              path="/articles/:id/edit"
+              component={EditArticleForm}
+            />
             <Route exact path="/articles/:id" component={Article} />
           </Switch>
         </Container>

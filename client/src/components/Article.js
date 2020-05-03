@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import * as actions from "../actions";
 import { Spinner } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import Moment from "react-moment";
+import * as actions from "../actions";
 
 const Article = (props) => {
   const { id } = props.match.params;
@@ -26,7 +27,9 @@ const Article = (props) => {
             </small>{" "}
           </h6>
           <p>{body}</p>
-          {isAuthor ? <a href="something">Edit Article</a> : null}
+          {isAuthor ? (
+            <Link to={`/articles/${props.article._id}/edit`}>Edit Article</Link>
+          ) : null}
         </div>
       </div>
     );
