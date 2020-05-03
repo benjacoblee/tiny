@@ -11,11 +11,23 @@ const Articles = (props) => {
     console.log(props.articles);
   }, []);
 
-  const truncateBody = (text) => {
+  const truncateBody = (text, id) => {
     if (text.length > 500) {
-      return text.substring(0, 477) + "...";
+      return (
+        <div>
+          <p>
+            {text.substring(0, 477)}{" "}
+            <Link to={`/articles/${id}`}>...more</Link>
+          </p>
+        </div>
+      );
     }
-    return text;
+    return (
+      <div>
+        <p>{text}</p>
+        <Link to={`/articles/${id}`}>Read more</Link>
+      </div>
+    );
   };
 
   const renderArticles = () => {
@@ -35,10 +47,7 @@ const Articles = (props) => {
                   </span>
                 </small>
               </Card.Subtitle>
-              <Card.Text>{truncateBody(article.body)}</Card.Text>
-              <Button as={Link} to={`/articles/${article._id}`}>
-                Read More
-              </Button>
+              {truncateBody(article.body, article._id)}
             </Card.Body>
           </Card>
         );
