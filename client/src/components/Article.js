@@ -15,7 +15,7 @@ const Article = (props) => {
 
   if (props.article.title) {
     const isAuthor = props.article.postedBy._id === props.auth._id;
-    let { title, postedBy, dateCreated, body } = props.article;
+    let { title, postedBy, dateCreated, dateEdited, body } = props.article;
     return (
       <div>
         <div className="mt-3">
@@ -23,7 +23,10 @@ const Article = (props) => {
           <h6>
             {postedBy.name}{" "}
             <small>
-              <Moment format="DD MMM YYYY">{dateCreated}</Moment>
+              {dateEdited ? "edited " : null}
+              <Moment format="DD MMM YYYY">
+                {dateEdited ? dateEdited : dateCreated}
+              </Moment>
             </small>{" "}
           </h6>
           <p>{body}</p>
