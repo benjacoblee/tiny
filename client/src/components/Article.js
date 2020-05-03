@@ -3,13 +3,14 @@ import { connect } from "react-redux";
 import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
+import { Form, Button } from "react-bootstrap";
 import * as actions from "../actions";
 
 const Article = (props) => {
   const { id } = props.match.params;
+  const token = sessionStorage.getItem("jwtToken");
   useEffect(() => {
     props.fetchArticle(id);
-    const token = sessionStorage.getItem("jwtToken");
     props.fetchUser(token); // take auth id and compare to postedby id
   }, []);
 
@@ -21,7 +22,7 @@ const Article = (props) => {
         <div className="mt-3">
           <h5>{title}</h5>
           <h6>
-            {postedBy.name ? postedBy.name : postedBy.email }{" "}
+            {postedBy.name ? postedBy.name : postedBy.email}{" "}
             <small>
               {dateEdited ? "edited " : null}
               <Moment format="DD MMM YYYY">
@@ -31,7 +32,20 @@ const Article = (props) => {
           </h6>
           <p>{body}</p>
           {isAuthor ? (
-            <Link to={`/articles/${props.article._id}/edit`}>Edit Article</Link>
+            <p>
+              <Link to={`/articles/${props.article._id}/edit`}>
+                Edit Article
+              </Link>
+            </p>
+          ) : null}
+          {token ? (
+            <Form>
+              <Form.Group controlId="exampleForm.ControlTextarea1">
+                <Form.Label>Post a comment</Form.Label>
+                <Form.Control as="textarea" rows="3" />
+              </Form.Group>
+              <Button>Submit</Button>
+            </Form>
           ) : null}
         </div>
       </div>

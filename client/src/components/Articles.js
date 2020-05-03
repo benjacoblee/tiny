@@ -16,7 +16,7 @@ const Articles = (props) => {
       return (
         <div>
           <p>
-            {text.substring(0, 477)}{" "}
+            {text.substring(0, 497)}{" "}
             <Link to={`/articles/${id}`}>...more</Link>
           </p>
         </div>
