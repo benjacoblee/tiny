@@ -12,6 +12,7 @@ router.get("/", async (req, res) => {
   const limit = 10;
   try {
     const articles = await Article.find({})
+      .sort([["dateCreated", -1]])
       .skip(page * limit)
       .limit(limit)
       .populate({

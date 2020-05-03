@@ -14,8 +14,8 @@ const Header = () => {
   const token = sessionStorage.getItem("jwtToken");
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-      <Navbar.Brand as={Link} to="/">
-        Tiny
+      <Navbar.Brand>
+        <a style={{color: "white"}} href="/">Tiny</a>
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
@@ -53,7 +53,7 @@ const Header = () => {
         </Nav>
 
         <Form inline>
-          <FormControl type="text" placeholder="Search" className="mr-sm-2" />
+          <FormControl type="text" placeholder="Search" className="mr-sm-2 mb-2" />
           <Button variant="outline-light">Search</Button>
         </Form>
       </Navbar.Collapse>

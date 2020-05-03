@@ -56,7 +56,6 @@ const ArticleForm = (props) => {
           />
           <Form.Text>Please provide comma separated values!</Form.Text>
         </Form.Group>
-
         <Form.Group controlId="formBasicPassword">
           <Form.Label>Body</Form.Label>
           <Form.Control

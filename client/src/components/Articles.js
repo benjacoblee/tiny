@@ -7,7 +7,7 @@ import React, {
   Fragment
 } from "react";
 import { connect } from "react-redux";
-import { Card, Button, Spinner } from "react-bootstrap";
+import { Card, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import * as actions from "../actions";
 import Moment from "react-moment";
@@ -20,7 +20,6 @@ const Articles = (props) => {
     (node) => {
       new IntersectionObserver((entries) => {
         entries.forEach((en) => {
-          console.log(en.intersectionRatio);
           if (en.intersectionRatio > 0) {
             updatePage(page++);
             props.fetchArticles(page);
@@ -37,7 +36,7 @@ const Articles = (props) => {
         scrollObserver(bottomBoundaryRef.current);
       }
     });
-  }, [scrollObserver, bottomBoundaryRef]);
+  }, []);
 
   const truncateBody = (text, id) => {
     if (text.length > 500) {
@@ -58,6 +57,7 @@ const Articles = (props) => {
   };
 
   const renderArticles = () => {
+    // updateArticleLength(props.articles.length);
     if (props.articles.length > 0) {
       return props.articles.map((article) => {
         return (
