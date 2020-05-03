@@ -1,17 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { connect } from "react-redux";
 import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
 import { Form, Button } from "react-bootstrap";
 import * as actions from "../actions";
+import Comments from "./Comments";
 
 const Article = (props) => {
   const { id } = props.match.params;
   const token = sessionStorage.getItem("jwtToken");
   const [formData, updateFormData] = useState({
-    body: ""
+    text: ""
   });
+  const commentsEndRef = useRef(null);
+
   useEffect(() => {
     props.fetchArticle(id);
     props.fetchUser(token); // take auth id and compare to postedby id
@@ -22,9 +25,17 @@ const Article = (props) => {
   };
 
   const handleSubmit = (e) => {
+    const articleID = id;
     e.preventDefault();
-    console.log(formData); // post formData
+    props.postComment(articleID, formData);
+    updateFormData({ text: "" });
+    scrollToBottom();
+    // post formData
     // need action to handle post comment
+  };
+
+  const scrollToBottom = () => {
+    commentsEndRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
   if (props.article.title) {
@@ -58,9 +69,10 @@ const Article = (props) => {
                 <Form.Control
                   as="textarea"
                   rows="3"
-                  name="body"
-                  value={formData.body}
+                  name="text"
+                  value={formData.text}
                   onChange={handleChange}
+                  required
                 />
               </Form.Group>
               <Button variant="primary" type="submit">
@@ -69,6 +81,8 @@ const Article = (props) => {
             </Form>
           ) : null}
         </div>
+        <Comments comments={props.article.comments} />
+        <div ref={commentsEndRef}></div>
       </div>
     );
   }

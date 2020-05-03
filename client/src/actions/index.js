@@ -7,7 +7,8 @@ import {
   EDIT_ARTICLE,
   FETCH_ARTICLE,
   FETCH_ARTICLES,
-  LOGOUT_USER
+  LOGOUT_USER,
+  POST_COMMENT
 } from "./types";
 
 const clearAlert = (type) => (dispatch) => {
@@ -151,5 +152,30 @@ export const fetchArticles = () => async (dispatch) => {
     });
   } catch (err) {
     console.error(err);
+  }
+};
+
+export const postComment = (articleID, commentData) => async (dispatch) => {
+  console.log(articleID, "is article id");
+  console.log(commentData, "is commentdad");
+
+  try {
+    const token = sessionStorage.getItem("jwtToken");
+    let response = await axios.post(
+      `/api/articles/${articleID}/comments`,
+      commentData,
+      {
+        headers: {
+          "x-auth-token": token
+        }
+      }
+    );
+
+    dispatch({
+      type: POST_COMMENT,
+      payload: response.data
+    });
+  } catch (err) {
+    console.log(err);
   }
 };

@@ -38,7 +38,7 @@ router.post(
         .populate({
           path: "postedBy",
           model: "User",
-          select: ["name"]
+          select: ["name", "email"]
         })
         .populate(
           {
@@ -46,7 +46,7 @@ router.post(
             populate: {
               path: "postedBy",
               model: "User",
-              select: ["name"]
+              select: ["name", "email"]
             }
           },
           (err) => {
@@ -59,7 +59,6 @@ router.post(
         msg: "Server error?"
       });
     }
-    console.log(comment);
   }
 );
 
@@ -96,14 +95,14 @@ router.patch(
       let article = await Article.findById(id)
         .populate({
           path: "postedBy",
-          select: ["name"],
+          select: ["name", "email"],
           model: "User"
         })
         .populate({
           path: "comments",
           populate: {
             path: "postedBy",
-            select: ["name"],
+            select: ["name", "email"],
             model: "User"
           }
         });
@@ -120,46 +119,45 @@ router.patch(
 router.delete("/:commentID", auth, async (req, res) => {
   const { id, commentID } = req.params;
 
-    try {
-       let article = await Article.findById(id);
-       const comment = await Comment.findById(commentID);
+  try {
+    let article = await Article.findById(id);
+    const comment = await Comment.findById(commentID);
 
-       if (req.user.userID !== comment.postedBy.toString()) {
-         return res.status(400).json({
-           msg: "Only owner of comment can delete!"
-         });
-       } 
-       
-      await Comment.findByIdAndDelete(commentID);
-
-      article.comments = article.comments.filter((comment) => {
-        return comment._id.toString() !== commentID;
-      });
-
-      article = await article.save();
-      article
-        .populate({
-          path: "postedBy",
-          select: ["name"]
-        })
-        .populate(
-          {
-            path: "comments",
-            populate: {
-              path: "postedBy",
-              select: ["name"]
-            }
-          },
-          (err) => {
-            res.json(article);
-          }
-        );
-    } catch (err) {
-      res.status(500).json({
-        msg: err.message
+    if (req.user.userID !== comment.postedBy.toString()) {
+      return res.status(400).json({
+        msg: "Only owner of comment can delete!"
       });
     }
-  
+
+    await Comment.findByIdAndDelete(commentID);
+
+    article.comments = article.comments.filter((comment) => {
+      return comment._id.toString() !== commentID;
+    });
+
+    article = await article.save();
+    article
+      .populate({
+        path: "postedBy",
+        select: ["name", "email"]
+      })
+      .populate(
+        {
+          path: "comments",
+          populate: {
+            path: "postedBy",
+            select: ["name", "email"]
+          }
+        },
+        (err) => {
+          res.json(article);
+        }
+      );
+  } catch (err) {
+    res.status(500).json({
+      msg: err.message
+    });
+  }
 });
 
 module.exports = router;

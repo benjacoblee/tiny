@@ -1,4 +1,9 @@
-import { SUBMIT_ARTICLE, EDIT_ARTICLE, FETCH_ARTICLE } from "../actions/types";
+import {
+  SUBMIT_ARTICLE,
+  EDIT_ARTICLE,
+  FETCH_ARTICLE,
+  POST_COMMENT
+} from "../actions/types";
 
 export default (state = {}, action) => {
   switch (action.type) {
@@ -12,6 +17,8 @@ export default (state = {}, action) => {
     case EDIT_ARTICLE:
       console.log("editing article sending id");
       return { ...state, id: action.payload };
+    case POST_COMMENT:
+      return action.payload;
     default:
       return state;
   }
