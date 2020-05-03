@@ -3,14 +3,20 @@ import { Form, Button } from "react-bootstrap";
 import { connect } from "react-redux";
 import * as actions from "../actions";
 
-const EditArticleForm = ({match, article, history, fetchArticle, editArticle}) => {
+const EditArticleForm = ({
+  match,
+  article,
+  history,
+  fetchArticle,
+  editArticle
+}) => {
   const { id } = match.params;
   useEffect(() => {
     fetchArticle(id);
     if (article.id) {
       history.push(`/articles/${article.id}`);
     }
-  }, [article.id]);
+  }, [fetchArticle, history, id, article.id]);
   const token = sessionStorage.getItem("jwtToken");
 
   if (!token) {
