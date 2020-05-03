@@ -13,14 +13,14 @@ router.get("/", async (req, res) => {
       .populate({
         path: "postedBy",
         model: "User",
-        select: ["name"]
+        select: ["name", "email"]
       })
       .populate({
         path: "comments",
         populate: {
           path: "postedBy",
           model: "User",
-          select: ["name"]
+          select: ["name", "email"]
         }
       });
     res.json(articles);
@@ -43,7 +43,7 @@ router.get("/:id", async (req, res) => {
         populate: {
           path: "postedBy",
           model: "User",
-          select: ["name"]
+          select: ["name", "email"]
         }
       });
 

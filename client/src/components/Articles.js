@@ -20,7 +20,9 @@ const Articles = (props) => {
               <Card.Title>{article.title} </Card.Title>
               <Card.Subtitle className="mb-2">
                 <small>
-                  {article.postedBy.name}{" "}
+                  {article.postedBy.name
+                    ? article.postedBy.name
+                    : article.postedBy.email}{" "}
                   <span className="text-muted">
                     <Moment format="DD MMM YYYY">{article.dateCreated}</Moment>
                   </span>
