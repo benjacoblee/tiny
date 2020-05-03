@@ -3,15 +3,18 @@ import { Form, Button } from "react-bootstrap";
 import { connect } from "react-redux";
 import * as actions from "../actions";
 
-const EditArticleForm = (props) => {
-  const { id } = props.match.params;
+const EditArticleForm = ({match, article, history, fetchArticle, editArticle}) => {
+  const { id } = match.params;
   useEffect(() => {
-    props.fetchArticle(id);
-  }, []);
+    fetchArticle(id);
+    if (article.id) {
+      history.push(`/articles/${article.id}`);
+    }
+  }, [article.id]);
   const token = sessionStorage.getItem("jwtToken");
 
   if (!token) {
-    props.history.push("/");
+    history.push("/");
   }
 
   const [formData, updateFormData] = useState({
@@ -29,7 +32,7 @@ const EditArticleForm = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.editArticle(formData);
+    editArticle(formData);
   };
 
   return (
@@ -41,7 +44,7 @@ const EditArticleForm = (props) => {
             type="text"
             name="title"
             required
-            placeholder={props.article.title}
+            placeholder={article.title}
             value={title}
             onChange={handleChange}
           />
@@ -51,7 +54,7 @@ const EditArticleForm = (props) => {
           <Form.Control
             type="text"
             name="tags"
-            placeholder={props.article.tags}
+            placeholder={article.tags}
             value={tags}
             onChange={handleChange}
           />
@@ -65,7 +68,7 @@ const EditArticleForm = (props) => {
             rows="10"
             name="body"
             required
-            placeholder={props.article.body}
+            placeholder={article.body}
             value={body}
             onChange={handleChange}
           />

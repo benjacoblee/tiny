@@ -130,7 +130,7 @@ export const editArticle = (articleDetails) => async (dispatch) => {
   );
   dispatch({
     type: EDIT_ARTICLE,
-    payload: response.data
+    payload: response.data._id
   });
 };
 
