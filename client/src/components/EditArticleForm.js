@@ -4,8 +4,8 @@ import { connect } from "react-redux";
 import * as actions from "../actions";
 
 const EditArticleForm = (props) => {
+  const { id } = props.match.params;
   useEffect(() => {
-    const { id } = props.match.params;
     props.fetchArticle(id);
   }, []);
   const token = sessionStorage.getItem("jwtToken");
@@ -15,6 +15,7 @@ const EditArticleForm = (props) => {
   }
 
   const [formData, updateFormData] = useState({
+    id,
     title: "",
     body: "",
     tags: ""
@@ -28,7 +29,7 @@ const EditArticleForm = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.submitArticle(formData);
+    props.editArticle(formData);
   };
 
   return (

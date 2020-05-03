@@ -4,6 +4,7 @@ import {
   REGISTER_USER,
   FETCH_USER,
   SUBMIT_ARTICLE,
+  EDIT_ARTICLE,
   FETCH_ARTICLE,
   FETCH_ARTICLES,
   LOGOUT_USER
@@ -101,7 +102,6 @@ export const fetchUser = (token) => async (dispatch) => {
 };
 
 export const submitArticle = (articleDetails) => async (dispatch) => {
-  console.log("IN HERE BRO");
   const token = sessionStorage.getItem("jwtToken");
   let response = await axios.post("/api/articles", articleDetails, {
     headers: {
@@ -113,6 +113,24 @@ export const submitArticle = (articleDetails) => async (dispatch) => {
   dispatch({
     type: SUBMIT_ARTICLE,
     payload: response.data._id
+  });
+};
+
+export const editArticle = (articleDetails) => async (dispatch) => {
+  const token = sessionStorage.getItem("jwtToken");
+  console.log(articleDetails.id);
+  let response = await axios.patch(
+    `/api/articles/${articleDetails.id}`,
+    articleDetails,
+    {
+      headers: {
+        "x-auth-token": token
+      }
+    }
+  );
+  dispatch({
+    type: EDIT_ARTICLE,
+    payload: response.data
   });
 };
 
