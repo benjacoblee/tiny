@@ -1,4 +1,11 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  pagerDispatch,
+  Fragment
+} from "react";
 import { connect } from "react-redux";
 import { Card, Button, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -6,18 +13,38 @@ import * as actions from "../actions";
 import Moment from "react-moment";
 
 const Articles = (props) => {
+  let [page, updatePage] = useState(0);
+
+  let bottomBoundaryRef = useRef(null);
+  const scrollObserver = useCallback(
+    (node) => {
+      new IntersectionObserver((entries) => {
+        entries.forEach((en) => {
+          console.log(en.intersectionRatio);
+          if (en.intersectionRatio > 0) {
+            updatePage(page++);
+            props.fetchArticles(page);
+          }
+        });
+      }).observe(node);
+    },
+    [pagerDispatch]
+  );
+
   useEffect(() => {
-    props.fetchArticles();
-    console.log(props.articles);
-  }, []);
+    props.fetchArticles(page).then(() => {
+      if (bottomBoundaryRef.current) {
+        scrollObserver(bottomBoundaryRef.current);
+      }
+    });
+  }, [scrollObserver, bottomBoundaryRef]);
 
   const truncateBody = (text, id) => {
     if (text.length > 500) {
       return (
         <div>
           <p>
-            {text.substring(0, 497)}{" "}
-            <Link to={`/articles/${id}`}>...more</Link>
+            {text.substring(0, 497)} <Link to={`/articles/${id}`}>...more</Link>
           </p>
         </div>
       );
@@ -59,7 +86,12 @@ const Articles = (props) => {
       </Spinner>
     );
   };
-  return <Fragment>{renderArticles()}</Fragment>;
+  return (
+    <Fragment>
+      {renderArticles()}
+      <div id="page-bottom-boundary" ref={bottomBoundaryRef}></div>
+    </Fragment>
+  );
 };
 
 const mapStateToProps = (state) => {

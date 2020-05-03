@@ -8,8 +8,12 @@ const Comment = require("../../models/Comment");
 
 router.get("/", async (req, res) => {
   // just returns all articles for now. might need to use req.query for pagination or to find articles by tag
+  const page = parseInt(req.query.page);
+  const limit = 10;
   try {
     const articles = await Article.find({})
+      .skip(page * limit)
+      .limit(limit)
       .populate({
         path: "postedBy",
         model: "User",
@@ -23,6 +27,7 @@ router.get("/", async (req, res) => {
           select: ["name", "email"]
         }
       });
+
     res.json(articles);
   } catch (err) {
     res.json(err);

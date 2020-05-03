@@ -143,9 +143,10 @@ export const fetchArticle = (id) => async (dispatch) => {
   });
 };
 
-export const fetchArticles = () => async (dispatch) => {
+export const fetchArticles = (page) => async (dispatch) => {
   try {
-    let response = await axios.get("/api/articles");
+    let response = await axios.get(`/api/articles?page=${page}`);
+    console.log(response)
     dispatch({
       type: FETCH_ARTICLES,
       payload: response.data
