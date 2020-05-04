@@ -51,3 +51,5 @@ Front-end workflow consisted of React component creation; writing actions and ac
 - Learn how to deploy for production
 
 ## Unsolved Problems
+- Prevent re-fetching of data in Articles component
+- Re-fetch articles when article has been updated

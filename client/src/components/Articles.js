@@ -1,8 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  Fragment
-} from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { connect } from "react-redux";
 import { Card, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -57,13 +53,25 @@ const Articles = (props) => {
     );
   };
 
+  const renderReadingSpeed = (text) => {
+    const length = text.split(" ").length;
+    const averageReadingTime = Math.round(length / 225);
+    return averageReadingTime === 0 ? 1 : averageReadingTime;
+  };
+
   const renderArticles = () => {
     if (props.articles.length > 0) {
       return props.articles.map((article) => {
         return (
           <Card key={article._id} className="my-3">
             <Card.Body>
-              <Card.Title>{article.title} </Card.Title>
+              <Card.Title>
+                {article.title}{" "}
+                <small style={{fontSize: ".6em"}} className="text-muted">
+                  {" "}
+                  {renderReadingSpeed(article.body)} minute read
+                </small>
+              </Card.Title>
               <Card.Subtitle className="mb-2">
                 <small>
                   {article.postedBy.name
