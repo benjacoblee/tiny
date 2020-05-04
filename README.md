@@ -51,3 +51,4 @@ Front-end workflow consisted of React component creation; writing actions and ac
 - Learn how to deploy for production
 
 ## Unsolved Problems
+- How to prevent re-fetching data on mount
