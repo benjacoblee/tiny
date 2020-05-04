@@ -88,7 +88,7 @@ router.post(
       });
     }
 
-    const { title, body, tags } = req.body;
+    const { title, body, tags, image } = req.body;
 
     let tagsArr = [];
 
@@ -104,6 +104,7 @@ router.post(
         title,
         body,
         tags: tagsArr,
+        image,
         postedBy: user._id
       }).save();
       article.populate("postedBy", ["name"], (err) => {

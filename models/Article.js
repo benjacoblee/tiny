@@ -16,6 +16,7 @@ const articleSchema = new Schema({
   },
   dateEdited: Date,
   tags: [String],
+  image: String,
   comments: [{
     type: Schema.Types.ObjectId,
     ref: "Comment"

@@ -40,7 +40,15 @@ const Article = (props) => {
 
   if (props.article.title) {
     const isAuthor = props.article.postedBy._id === props.auth._id;
-    let { title, postedBy, dateCreated, dateEdited, body } = props.article;
+    let {
+      title,
+      postedBy,
+      dateCreated,
+      dateEdited,
+      body,
+      image
+    } = props.article;
+    console.log(image);
     return (
       <div>
         <div className="mt-3">
@@ -54,6 +62,7 @@ const Article = (props) => {
               </Moment>
             </small>{" "}
           </h6>
+          {image ? <img style={{ maxWidth: "100%" }} src={image}></img> : null}
           <p>{body}</p>
           {isAuthor ? (
             <p>

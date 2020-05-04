@@ -24,7 +24,9 @@ const Articles = (props) => {
       new IntersectionObserver((entries) => {
         entries.forEach((en) => {
           if (en.intersectionRatio > 0) {
-            return updatePage(page++);
+            console.log(en.intersectionRatio)
+            page++;
+            updatePage(page);
           }
         });
       }).observe(node);

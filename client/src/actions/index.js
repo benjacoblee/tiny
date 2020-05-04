@@ -105,17 +105,65 @@ export const fetchUser = (token) => async (dispatch) => {
 
 export const submitArticle = (articleDetails) => async (dispatch) => {
   const token = sessionStorage.getItem("jwtToken");
-  let response = await axios.post("/api/articles", articleDetails, {
-    headers: {
-      "Content-Type": "application/json",
-      "x-auth-token": token
-    }
-  });
 
-  dispatch({
-    type: SUBMIT_ARTICLE,
-    payload: response.data._id
-  });
+  if (articleDetails.file) {
+    const contentType = articleDetails.file.type;
+    const generatePutUrl = "/generate-put-url";
+    let options = {
+      params: {
+        Key: articleDetails.file.name,
+        ContentType: contentType
+      },
+      headers: {
+        "Content-Type": contentType
+      }
+    };
+
+    try {
+      let putUrlResponse = await axios.get(generatePutUrl, options);
+      const {
+        data: { putURL }
+      } = putUrlResponse;
+
+      console.log(putURL);
+
+      let putFileResponse = await axios.put(
+        putURL,
+        articleDetails.file,
+        options
+      );
+
+      articleDetails.image = `https://tiny-blog-app.s3.ap-southeast-1.amazonaws.com/${articleDetails.file.name}`;
+
+      let response = await axios.post("/api/articles", articleDetails, {
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": token
+        }
+      });
+
+      console.log(response);
+
+      return dispatch({
+        type: SUBMIT_ARTICLE,
+        payload: response.data._id
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  } else {
+    let response = await axios.post("/api/articles", articleDetails, {
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token
+      }
+    });
+
+    return dispatch({
+      type: SUBMIT_ARTICLE,
+      payload: response.data._id
+    });
+  }
 };
 
 export const editArticle = (articleDetails) => async (dispatch) => {
