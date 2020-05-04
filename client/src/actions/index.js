@@ -8,7 +8,8 @@ import {
   FETCH_ARTICLE,
   FETCH_ARTICLES,
   LOGOUT_USER,
-  POST_COMMENT
+  POST_COMMENT,
+  ADVANCE_PAGE
 } from "./types";
 
 const clearAlert = (type) => (dispatch) => {
@@ -146,12 +147,11 @@ export const fetchArticle = (id) => async (dispatch) => {
 export const fetchArticles = (page) => async (dispatch) => {
   try {
     let response = await axios.get(`/api/articles?page=${page}`);
-    console.log(response.data);
-    console.log(response.data.length);
     dispatch({
       type: FETCH_ARTICLES,
       payload: response.data
     });
+    console.log(response.data.length);
   } catch (err) {
     console.error(err);
   }
@@ -180,4 +180,10 @@ export const postComment = (articleID, commentData) => async (dispatch) => {
   } catch (err) {
     console.log(err);
   }
+};
+
+export const advancePage = () => {
+  return {
+    type: ADVANCE_PAGE
+  };
 };

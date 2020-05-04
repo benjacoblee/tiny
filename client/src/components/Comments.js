@@ -3,7 +3,6 @@ import React, { useEffect, useRef } from "react";
 const Comments = (props) => {
   const renderComments = () => {
     if (props.comments.length > 0) {
-      console.log("HAPPENING")
       return props.comments.map((comment) => {
         return (
           <div key={comment._id}>

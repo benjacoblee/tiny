@@ -3,7 +3,6 @@ import React, {
   useEffect,
   useRef,
   useCallback,
-  pagerDispatch,
   Fragment
 } from "react";
 import { connect } from "react-redux";
@@ -15,28 +14,29 @@ import Moment from "react-moment";
 const Articles = (props) => {
   let [page, updatePage] = useState(0);
 
+  useEffect(() => {
+    props.fetchArticles(page);
+  }, [props.fetchArticles, page]);
+
   let bottomBoundaryRef = useRef(null);
   const scrollObserver = useCallback(
     (node) => {
       new IntersectionObserver((entries) => {
         entries.forEach((en) => {
           if (en.intersectionRatio > 0) {
-            updatePage(page++);
-            props.fetchArticles(page);
+            return updatePage(page++);
           }
         });
       }).observe(node);
     },
-    [pagerDispatch]
+    [updatePage]
   );
 
   useEffect(() => {
-    props.fetchArticles(page).then(() => {
-      if (bottomBoundaryRef.current) {
-        scrollObserver(bottomBoundaryRef.current);
-      }
-    });
-  }, []);
+    if (bottomBoundaryRef.current) {
+      scrollObserver(bottomBoundaryRef.current);
+    }
+  }, [scrollObserver, bottomBoundaryRef, props.articles]);
 
   const truncateBody = (text, id) => {
     if (text.length > 500) {
@@ -57,7 +57,6 @@ const Articles = (props) => {
   };
 
   const renderArticles = () => {
-    // updateArticleLength(props.articles.length);
     if (props.articles.length > 0) {
       return props.articles.map((article) => {
         return (
@@ -89,13 +88,17 @@ const Articles = (props) => {
   return (
     <Fragment>
       {renderArticles()}
-      <div id="page-bottom-boundary" ref={bottomBoundaryRef}></div>
+      <div
+        style={{ border: "10px solid red" }}
+        id="page-bottom-boundary"
+        ref={bottomBoundaryRef}
+      ></div>
     </Fragment>
   );
 };
 
 const mapStateToProps = (state) => {
-  return { articles: state.articles };
+  return { articles: state.articles, page: state.page };
 };
 
 export default connect(mapStateToProps, actions)(Articles);
