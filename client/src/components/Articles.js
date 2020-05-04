@@ -1,8 +1,6 @@
 import React, {
   useState,
   useEffect,
-  useRef,
-  useCallback,
   Fragment
 } from "react";
 import { connect } from "react-redux";
@@ -12,33 +10,34 @@ import * as actions from "../actions";
 import Moment from "react-moment";
 
 const Articles = (props) => {
-  let [page, updatePage] = useState(0);
+  const [isFetching, setIsFetching] = useState(false);
 
   useEffect(() => {
-    props.fetchArticles(page);
-  }, [props.fetchArticles, page]);
-
-  let bottomBoundaryRef = useRef(null);
-  const scrollObserver = useCallback(
-    (node) => {
-      new IntersectionObserver((entries) => {
-        entries.forEach((en) => {
-          if (en.intersectionRatio > 0) {
-            console.log(en.intersectionRatio)
-            page++;
-            updatePage(page);
-          }
-        });
-      }).observe(node);
-    },
-    [updatePage]
-  );
+    props.fetchArticles(props.page);
+    props.advancePage();
+    console.log("MOUNTING");
+  }, []);
 
   useEffect(() => {
-    if (bottomBoundaryRef.current) {
-      scrollObserver(bottomBoundaryRef.current);
-    }
-  }, [scrollObserver, bottomBoundaryRef, props.articles]);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (!isFetching) return;
+    props.fetchArticles(props.page);
+    props.advancePage();
+    setIsFetching(false);
+  }, [isFetching]);
+
+  const handleScroll = () => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop !==
+      document.documentElement.offsetHeight
+    )
+      return;
+    setIsFetching(true);
+  };
 
   const truncateBody = (text, id) => {
     if (text.length > 500) {
@@ -87,16 +86,8 @@ const Articles = (props) => {
       </Spinner>
     );
   };
-  return (
-    <Fragment>
-      {renderArticles()}
-      <div
-        style={{ border: "10px solid red" }}
-        id="page-bottom-boundary"
-        ref={bottomBoundaryRef}
-      ></div>
-    </Fragment>
-  );
+
+  return <Fragment>{renderArticles()}</Fragment>;
 };
 
 const mapStateToProps = (state) => {
