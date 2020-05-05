@@ -36,6 +36,9 @@ const Header = () => {
               <Nav.Link as={Link} to="/articles/new">
                 Write
               </Nav.Link>
+              <Nav.Link as={Link} to="/dashboard">
+                Dashboard
+              </Nav.Link>
               <Nav.Link as={Link} to="/logout">
                 Log out
               </Nav.Link>

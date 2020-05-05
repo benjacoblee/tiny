@@ -9,6 +9,7 @@ import {
   AUTH_USER,
   REGISTER_USER,
   FETCH_USER,
+  FETCH_DASHBOARD_DETAILS,
   SUBMIT_ARTICLE,
   EDIT_ARTICLE,
   FETCH_ARTICLE,
@@ -278,4 +279,18 @@ export const advancePage = () => {
   return {
     type: ADVANCE_PAGE
   };
+};
+
+export const fetchDashboardDetails = () => async (dispatch) => {
+  const token = sessionStorage.getItem("jwtToken");
+  try {
+    const response = await axios.get("/api/auth/dashboard", {
+      headers: {
+        "x-auth-token": token
+      }
+    });
+    dispatch({ type: FETCH_DASHBOARD_DETAILS, payload: response.data });
+  } catch (err) {
+    console.error(err);
+  }
 };

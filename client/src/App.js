@@ -1,15 +1,12 @@
 import React, { useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import { Container } from "react-bootstrap";
 import * as actions from "./actions";
 import Header from "./components/layout/Header";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
+import Dashboard from "./components/Dashboard";
 import ArticleForm from "./components/ArticleForm";
 import EditArticleForm from "./components/EditArticleForm";
 import Articles from "./components/Articles";
@@ -35,6 +32,7 @@ const App = (props) => {
           <Route exact path="/" component={Articles} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
+          <Route exaxt path="/dashboard" component={Dashboard} />
           <Switch>
             <Route exact path="/articles/new" component={ArticleForm} />
             <Route
