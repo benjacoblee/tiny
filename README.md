@@ -43,7 +43,7 @@ Front-end workflow consisted of React component creation; writing actions and ac
 ## Installation Instructions
 
 ## Motivations
-- Figure out how to set up a MEAN project from scratch
+- Figure out how to set up a MERN project from scratch
 - Learn how to use MongoDB with Mongoose 
 - Handle back-end validation
 - Familiarize with Redux and how to structure Redux store
