@@ -30,8 +30,8 @@ const ArticleForm = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     formData.file = fileInput.current.files[0];
-    await props.submitArticle(formData).then(() => {
-      props.history.push(`/articles/${props.article.id}`);
+    await props.submitArticle(formData).then((res) => {
+      props.history.push(`/articles/${res.payload}`);
     });
   };
 
