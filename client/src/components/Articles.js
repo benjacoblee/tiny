@@ -47,7 +47,7 @@ const Articles = ({ fetchArticles, advancePage, page, articles }) => {
     return (
       <div className="mt-3">
         <p>{text}</p>
-        <Link to={`/articles/${id}`}>Read more</Link>
+        <Link to={`/articles/${id}`}>Go to article</Link>
       </div>
     );
   };

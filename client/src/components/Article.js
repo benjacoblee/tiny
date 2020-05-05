@@ -71,7 +71,7 @@ const Article = (props) => {
       body,
       image
     } = props.article;
-    console.log(image);
+
     return (
       <div>
         <div className="mt-3">
