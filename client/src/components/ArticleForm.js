@@ -66,7 +66,14 @@ const ArticleForm = (props) => {
         </Form.Group>
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Image Upload</Form.Label>
-          <input type="file" name="fileName" accept="image/*" ref={fileInput} />
+          <p>
+            <input
+              type="file"
+              name="fileName"
+              accept="image/*"
+              ref={fileInput}
+            />
+          </p>
         </Form.Group>
         <Form.Group controlId="formBasicPassword">
           <Form.Label>Body</Form.Label>

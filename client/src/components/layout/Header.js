@@ -24,20 +24,23 @@ const Header = () => {
         <Nav className="mr-auto">
           {!token ? (
             <Fragment>
-              <Nav.Link as={Link} to="/login">
+              <Nav.Link as={Link} to="/login" href="/login">
                 Login
               </Nav.Link>
-              <Nav.Link as={Link} to="/register">
+              <Nav.Link as={Link} to="/register" href="/register">
                 Register
               </Nav.Link>
             </Fragment>
           ) : (
             <Fragment>
-              <Nav.Link as={Link} to="/articles/new">
+              <Nav.Link as={Link} to="/articles/new" href="/articles/new">
                 Write
               </Nav.Link>
-              <Nav.Link as={Link} to="/logout">
-                Log out
+              <Nav.Link as={Link} to="/dashboard" href="/dashboard">
+                Dashboard
+              </Nav.Link>
+              <Nav.Link as={Link} to="/logout" href="/logout">
+                Log Out
               </Nav.Link>
             </Fragment>
           )}

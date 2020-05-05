@@ -37,7 +37,7 @@ const Articles = ({ fetchArticles, advancePage, page, articles }) => {
   const truncateBody = (text, id) => {
     if (text.length > 500) {
       return (
-        <div>
+        <div className="mt-3">
           <p>
             {text.substring(0, 497)} <Link to={`/articles/${id}`}>...more</Link>
           </p>
@@ -45,7 +45,7 @@ const Articles = ({ fetchArticles, advancePage, page, articles }) => {
       );
     }
     return (
-      <div>
+      <div className="mt-3">
         <p>{text}</p>
         <Link to={`/articles/${id}`}>Read more</Link>
       </div>
@@ -73,8 +73,8 @@ const Articles = ({ fetchArticles, advancePage, page, articles }) => {
               </Card.Title>
               <Card.Subtitle className="mb-2">
                 <small>
-                  {article.postedBy.name
-                    ? article.postedBy.name
+                  {article.postedBy.fullName
+                    ? article.postedBy.fullName
                     : article.postedBy.email}{" "}
                   <span className="text-muted">
                     <Moment format="DD MMM YYYY">{article.dateCreated}</Moment>

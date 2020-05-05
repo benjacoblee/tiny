@@ -6,6 +6,7 @@ const gravatar = require("gravatar");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const User = require("../../models/User");
+const auth = require("../../middleware/auth");
 
 router.post(
   "/",
@@ -23,11 +24,11 @@ router.post(
       return res.status(422).json({ errors: errors.array() });
     }
 
-    const { name, email, password } = req.body;
+    const { email, password } = req.body;
     let user = await User.findOne({ email });
     if (user) {
       // console.log(user)
-      console.log("IN THIS BLOCK");
+
       return res.status(400).json({
         errors: [
           {
@@ -68,5 +69,28 @@ router.post(
     }
   }
 );
+
+router.put("/:userID", auth, async (req, res) => {
+  const { fullName, bio, image } = req.body;
+
+  try {
+    let user = await User.findById(req.user.userID).select("-password");
+
+    if (user) {
+      if (fullName) user.fullName = fullName;
+      if (bio) user.bio = bio;
+      if (image) user.avatar = image;
+
+      let result = await user.save();
+      console.log(result)
+
+      res.json(user);
+    }
+  } catch (err) {
+    res.status(500).json({
+      msg: "Error occurred"
+    });
+  }
+});
 
 module.exports = router;

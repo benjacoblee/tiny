@@ -6,9 +6,12 @@ import {
   ALERT_REGISTER_SUCCESS,
   ALERT_REGISTER_FAIL,
   ALERT_SUBMITTING_ARTICLE,
+  ALERT_SUBMITTING_BIO,
   AUTH_USER,
   REGISTER_USER,
   FETCH_USER,
+  SUBMIT_BIO,
+  FETCH_DASHBOARD_DETAILS,
   SUBMIT_ARTICLE,
   EDIT_ARTICLE,
   FETCH_ARTICLE,
@@ -243,7 +246,6 @@ export const fetchArticles = (page) => async (dispatch) => {
       type: FETCH_ARTICLES,
       payload: response.data
     });
-    console.log(response.data.length);
   } catch (err) {
     console.error(err);
   }
@@ -278,4 +280,84 @@ export const advancePage = () => {
   return {
     type: ADVANCE_PAGE
   };
+};
+
+export const fetchDashboardDetails = () => async (dispatch) => {
+  const token = sessionStorage.getItem("jwtToken");
+  try {
+    const response = await axios.get("/api/auth/dashboard", {
+      headers: {
+        "x-auth-token": token
+      }
+    });
+    dispatch({ type: FETCH_DASHBOARD_DETAILS, payload: response.data });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const submitBio = (userID, bioDetails) => async (dispatch) => {
+  const token = sessionStorage.getItem("jwtToken");
+  dispatch({
+    type: ALERT_SUBMITTING_BIO,
+    payload: {
+      message: [{ msg: "Submitting bio, please wait..." }],
+      variant: "warning"
+    }
+  });
+
+  clearAlert(ALERT_SUBMITTING_ARTICLE)(dispatch);
+
+  if (bioDetails.file) {
+    const contentType = bioDetails.file.type;
+    const generatePutUrl = "/generate-put-url";
+    let options = {
+      params: {
+        Key: bioDetails.file.name,
+        ContentType: contentType
+      },
+      headers: {
+        "Content-Type": contentType
+      }
+    };
+
+    try {
+      let putUrlResponse = await axios.get(generatePutUrl, options);
+      const {
+        data: { putURL }
+      } = putUrlResponse;
+
+      console.log(putURL);
+
+      await axios.put(putURL, bioDetails.file, options);
+
+      bioDetails.image = `https://tiny-blog-app.s3.ap-southeast-1.amazonaws.com/${bioDetails.file.name}`;
+
+      let response = await axios.put(`/api/users/${userID}`, bioDetails, {
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": token
+        }
+      });
+
+      return dispatch({
+        type: SUBMIT_ARTICLE,
+        payload: response.data._id
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  } else {
+    let response = await axios.put(`/api/users/${userID}`, bioDetails, {
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token
+      }
+    });
+
+    return dispatch({
+      type: SUBMIT_ARTICLE,
+      payload: response.data._id
+    });
+  }
 };
