@@ -216,6 +216,15 @@ export const submitArticle = (articleDetails) => async (dispatch) => {
 export const editArticle = (articleDetails) => async (dispatch) => {
   const token = sessionStorage.getItem("jwtToken");
   console.log(articleDetails.id);
+
+  dispatch({
+    type: ALERT_SUBMITTING_ARTICLE,
+    payload: {
+      message: [{ msg: "Submitting edited article, please wait..." }],
+      variant: "warning"
+    }
+  });
+
   let response = await axios.patch(
     `/api/articles/${articleDetails.id}`,
     articleDetails,
@@ -225,6 +234,9 @@ export const editArticle = (articleDetails) => async (dispatch) => {
       }
     }
   );
+
+  clearAlert(ALERT_SUBMITTING_ARTICLE)(dispatch);
+
   dispatch({
     type: EDIT_ARTICLE,
     payload: response.data._id
