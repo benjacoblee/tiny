@@ -35,6 +35,7 @@ export const authUser = (loginDetails) => async (dispatch) => {
     let response = await axios.post("/api/auth", loginDetails);
 
     console.log("DISPATCHING");
+    
     dispatch({
       type: ALERT_LOGIN_SUCCESS,
       payload: {
@@ -42,6 +43,8 @@ export const authUser = (loginDetails) => async (dispatch) => {
         variant: "success"
       }
     });
+    
+    clearAlert(ALERT_LOGIN_SUCCESS)(dispatch);
 
     dispatch({
       type: AUTH_USER,
@@ -49,15 +52,15 @@ export const authUser = (loginDetails) => async (dispatch) => {
         token: response.data
       }
     });
-
-    clearAlert(ALERT_LOGIN_SUCCESS)(dispatch);
   } catch (err) {
     console.log(err.response);
+
+    
     dispatch({
       type: ALERT_LOGIN_FAIL,
       payload: { message: err.response.data.errors, variant: "danger" }
     });
-
+    
     clearAlert(ALERT_LOGIN_FAIL)(dispatch);
   }
 
@@ -76,6 +79,8 @@ export const logoutUser = () => async (dispatch) => {
     }
   });
 
+  clearAlert(ALERT_LOGOUT_SUCCESS)(dispatch);
+
   dispatch({
     type: LOGOUT_USER,
     payload: {
@@ -83,7 +88,6 @@ export const logoutUser = () => async (dispatch) => {
     }
   });
 
-  clearAlert(ALERT_LOGOUT_SUCCESS)(dispatch);
 };
 
 export const registerUser = (registrationDetails) => async (dispatch) => {
@@ -109,6 +113,8 @@ export const registerUser = (registrationDetails) => async (dispatch) => {
       }
     });
 
+    clearAlert(ALERT_REGISTER_SUCCESS)(dispatch);
+
     dispatch({
       type: REGISTER_USER,
       payload: {
@@ -116,14 +122,14 @@ export const registerUser = (registrationDetails) => async (dispatch) => {
       }
     }); // get token, keep somewhere
 
-    clearAlert(ALERT_REGISTER_SUCCESS)(dispatch);
   } catch (err) {
     console.log(err);
+
     dispatch({
       type: ALERT_LOGIN_FAIL,
       payload: { message: err.response.data.errors, variant: "danger" }
     });
-
+    
     clearAlert(ALERT_LOGIN_FAIL)(dispatch);
   }
 
@@ -157,8 +163,6 @@ export const submitArticle = (articleDetails) => async (dispatch) => {
     }
   });
 
-  clearAlert(ALERT_SUBMITTING_ARTICLE)(dispatch);
-
   if (articleDetails.file) {
     const contentType = articleDetails.file.type;
     const generatePutUrl = "/generate-put-url";
@@ -191,6 +195,8 @@ export const submitArticle = (articleDetails) => async (dispatch) => {
         }
       });
 
+      clearAlert(ALERT_SUBMITTING_ARTICLE)(dispatch);
+
       return dispatch({
         type: SUBMIT_ARTICLE,
         payload: response.data._id
@@ -205,6 +211,8 @@ export const submitArticle = (articleDetails) => async (dispatch) => {
         "x-auth-token": token
       }
     });
+
+    clearAlert(ALERT_SUBMITTING_ARTICLE)(dispatch);
 
     return dispatch({
       type: SUBMIT_ARTICLE,
@@ -351,6 +359,7 @@ export const submitBio = (userID, bioDetails) => async (dispatch) => {
       });
 
       clearAlert(ALERT_SUBMITTING_BIO)(dispatch);
+
       return dispatch({
         type: SUBMIT_ARTICLE,
         payload: response.data._id
@@ -365,7 +374,9 @@ export const submitBio = (userID, bioDetails) => async (dispatch) => {
         "x-auth-token": token
       }
     });
+
     clearAlert(ALERT_SUBMITTING_BIO)(dispatch);
+
     return dispatch({
       type: SUBMIT_ARTICLE,
       payload: response.data._id
