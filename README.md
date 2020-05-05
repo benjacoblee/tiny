@@ -1,6 +1,4 @@
 # tiny
-
-## Like Medium But Smaller
 Basically a blog.
 
 ## Technologies 
