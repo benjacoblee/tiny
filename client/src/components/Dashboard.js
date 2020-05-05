@@ -3,8 +3,12 @@ import * as actions from "../actions";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-const Dashboard = ({ dashboard, fetchDashboardDetails }) => {
+const Dashboard = ({ dashboard, fetchDashboardDetails, history }) => {
+  const token = sessionStorage.getItem("jwtToken");
   useEffect(() => {
+    if (!token) {
+      history.push("/");
+    }
     fetchDashboardDetails();
   }, []);
 

@@ -244,7 +244,6 @@ export const fetchArticles = (page) => async (dispatch) => {
       type: FETCH_ARTICLES,
       payload: response.data
     });
-    console.log(response.data.length);
   } catch (err) {
     console.error(err);
   }
