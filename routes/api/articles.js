@@ -8,31 +8,48 @@ const Comment = require("../../models/Comment");
 
 router.get("/", async (req, res) => {
   // just returns all articles for now. might need to use req.query for pagination or to find articles by tag
-  const page = parseInt(req.query.page);
-  console.log("page is ", page)
-  const limit = 10;
-  try {
-    const articles = await Article.find({})
-      .sort([["dateCreated", -1]])
-      .skip(page * limit)
-      .limit(limit)
-      .populate({
-        path: "postedBy",
-        model: "User",
-        select: ["fullName", "email"]
-      })
-      .populate({
-        path: "comments",
-        populate: {
+  const query = req.query.q;
+  let page = req.query.page;
+  if (page) {
+    page = parseInt(req.query.page);
+    const limit = 10;
+
+    try {
+      const articles = await Article.find({})
+        .sort([["dateCreated", -1]])
+        .skip(page * limit)
+        .limit(limit)
+        .populate({
           path: "postedBy",
           model: "User",
           select: ["fullName", "email"]
-        }
-      });
+        })
+        .populate({
+          path: "comments",
+          populate: {
+            path: "postedBy",
+            model: "User",
+            select: ["fullName", "email"]
+          }
+        });
+
+      res.json(articles);
+    } catch (err) {
+      res.json(err);
+    }
+  }
+
+  if (query) {
+    const articlesArr = [];
+    let articles = await Article.find({
+      $or: [
+        { title: { $regex: query, $options: "i" } },
+        { body: { $regex: query, $options: "i" } },
+        { tags: { $regex: query, $options: "i" } }
+      ]
+    });
 
     res.json(articles);
-  } catch (err) {
-    res.json(err);
   }
 });
 

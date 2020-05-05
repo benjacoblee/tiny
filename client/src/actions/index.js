@@ -18,7 +18,8 @@ import {
   FETCH_ARTICLES,
   LOGOUT_USER,
   POST_COMMENT,
-  ADVANCE_PAGE
+  ADVANCE_PAGE,
+  SEARCH_ARTICLES
 } from "./types";
 
 const clearAlert = (type) => (dispatch) => {
@@ -137,7 +138,6 @@ export const registerUser = (registrationDetails) => async (dispatch) => {
 };
 
 export const fetchUser = (token) => async (dispatch) => {
-  console.log(token);
   let response = await axios.get("/api/auth", {
     headers: {
       "x-auth-token": token
@@ -371,9 +371,10 @@ export const submitBio = (userID, bioDetails) => async (dispatch) => {
   }
 };
 
-
-export const searchArticles = (query) => async dipatch => {
-  const response = await axios.get(`/api/articles?q=${query}`)
-  console.log(response)
-  console.log("fired")
-}
+export const searchArticles = (query) => async (dispatch) => {
+  const response = await axios.get(`/api/articles?q=${query}`);
+  dispatch({
+    type: SEARCH_ARTICLES,
+    payload: response.data
+  });
+};

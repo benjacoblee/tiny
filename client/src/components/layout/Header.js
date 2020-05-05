@@ -20,8 +20,11 @@ const Header = (props) => {
     updateSearchQuery(e.target.value);
   };
 
-  const handleSubmit = (e) => {
-    props.searchArticles(searchQuery);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await props.searchArticles(searchQuery).then(() => {
+      props.history.push(`/articles?q=${searchQuery}`);
+    });
   };
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -67,7 +70,7 @@ const Header = (props) => {
             </NavDropdown.Item>
   </NavDropdown>*/}
         </Nav>
-        <Form inline>
+        <Form onSubmit={handleSubmit} inline>
           <FormControl
             type="text"
             name="searchData"
@@ -76,9 +79,7 @@ const Header = (props) => {
             value={searchQuery}
             onChange={handleChange}
           />
-          <Button onClick={handleSubmit} variant="outline-light">
-            Search
-          </Button>
+          <Button type="submit" variant="outline-light">Search</Button>
         </Form>
       </Navbar.Collapse>
     </Navbar>

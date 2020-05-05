@@ -12,6 +12,7 @@ import ArticleForm from "./components/ArticleForm";
 import EditArticleForm from "./components/EditArticleForm";
 import Articles from "./components/Articles";
 import Article from "./components/Article";
+import ArticlesResult from "./components/ArticlesResult";
 import Alerts from "./components/Alerts";
 import Logout from "./components/auth/Logout";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -27,7 +28,7 @@ const App = (props) => {
   return (
     <Router>
       <div className="App">
-        <Header />
+        <Route path="/" component={Header} />
         <Alerts alerts={props.alerts.message} variant={props.alerts.variant} />
         <Container>
           <Route exact path="/" component={Articles} />
@@ -43,6 +44,7 @@ const App = (props) => {
               component={EditArticleForm}
             />
             <Route exact path="/articles/:id" component={Article} />
+            <Route exact path="/articles" component={ArticlesResult} />
           </Switch>
         </Container>
       </div>
