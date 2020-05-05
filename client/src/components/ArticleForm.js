@@ -6,11 +6,7 @@ import * as actions from "../actions";
 const ArticleForm = (props) => {
   const fileInput = createRef();
 
-  useEffect(() => {
-    if (props.article.id) {
-      props.history.push(`/articles/${props.article.id}`);
-    }
-  }, [props.article, props.history]);
+  useEffect(() => {}, [props.article, props.history]);
   const token = sessionStorage.getItem("jwtToken");
 
   if (!token) {
@@ -31,10 +27,12 @@ const ArticleForm = (props) => {
     updateFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     formData.file = fileInput.current.files[0];
-    props.submitArticle(formData);
+    await props.submitArticle(formData).then(() => {
+      props.history.push(`/articles/${props.article.id}`);
+    });
   };
 
   return (
