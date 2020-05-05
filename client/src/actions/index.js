@@ -35,7 +35,7 @@ export const authUser = (loginDetails) => async (dispatch) => {
     let response = await axios.post("/api/auth", loginDetails);
 
     console.log("DISPATCHING");
-    
+
     dispatch({
       type: ALERT_LOGIN_SUCCESS,
       payload: {
@@ -43,7 +43,7 @@ export const authUser = (loginDetails) => async (dispatch) => {
         variant: "success"
       }
     });
-    
+
     clearAlert(ALERT_LOGIN_SUCCESS)(dispatch);
 
     dispatch({
@@ -55,12 +55,11 @@ export const authUser = (loginDetails) => async (dispatch) => {
   } catch (err) {
     console.log(err.response);
 
-    
     dispatch({
       type: ALERT_LOGIN_FAIL,
       payload: { message: err.response.data.errors, variant: "danger" }
     });
-    
+
     clearAlert(ALERT_LOGIN_FAIL)(dispatch);
   }
 
@@ -87,7 +86,6 @@ export const logoutUser = () => async (dispatch) => {
       token: null
     }
   });
-
 };
 
 export const registerUser = (registrationDetails) => async (dispatch) => {
@@ -121,7 +119,6 @@ export const registerUser = (registrationDetails) => async (dispatch) => {
         token: response.data
       }
     }); // get token, keep somewhere
-
   } catch (err) {
     console.log(err);
 
@@ -129,7 +126,7 @@ export const registerUser = (registrationDetails) => async (dispatch) => {
       type: ALERT_LOGIN_FAIL,
       payload: { message: err.response.data.errors, variant: "danger" }
     });
-    
+
     clearAlert(ALERT_LOGIN_FAIL)(dispatch);
   }
 
@@ -359,11 +356,6 @@ export const submitBio = (userID, bioDetails) => async (dispatch) => {
       });
 
       clearAlert(ALERT_SUBMITTING_BIO)(dispatch);
-
-      return dispatch({
-        type: SUBMIT_ARTICLE,
-        payload: response.data._id
-      });
     } catch (err) {
       console.error(err);
     }
@@ -376,10 +368,12 @@ export const submitBio = (userID, bioDetails) => async (dispatch) => {
     });
 
     clearAlert(ALERT_SUBMITTING_BIO)(dispatch);
-
-    return dispatch({
-      type: SUBMIT_ARTICLE,
-      payload: response.data._id
-    });
   }
 };
+
+
+export const searchArticles = (query) => async dipatch => {
+  const response = await axios.get(`/api/articles?q=${query}`)
+  console.log(response)
+  console.log("fired")
+}

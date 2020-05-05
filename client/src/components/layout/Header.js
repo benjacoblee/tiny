@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { useState, Fragment } from "react";
 import {
   Navbar,
   Nav,
@@ -9,9 +9,20 @@ import {
 } from "react-bootstrap";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import * as actions from "../../actions";
 
-const Header = () => {
+const Header = (props) => {
   const token = sessionStorage.getItem("jwtToken");
+
+  const [searchQuery, updateSearchQuery] = useState("");
+
+  const handleChange = (e) => {
+    updateSearchQuery(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    props.searchArticles(searchQuery);
+  };
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Navbar.Brand>
@@ -56,14 +67,18 @@ const Header = () => {
             </NavDropdown.Item>
   </NavDropdown>*/}
         </Nav>
-
         <Form inline>
           <FormControl
             type="text"
+            name="searchData"
             placeholder="Search"
             className="mr-sm-2 mb-2"
+            value={searchQuery}
+            onChange={handleChange}
           />
-          <Button variant="outline-light">Search</Button>
+          <Button onClick={handleSubmit} variant="outline-light">
+            Search
+          </Button>
         </Form>
       </Navbar.Collapse>
     </Navbar>
@@ -74,4 +89,4 @@ const mapStateToProps = (state) => {
   return { auth: state.auth };
 };
 
-export default connect(mapStateToProps, {})(Header);
+export default connect(mapStateToProps, actions)(Header);
