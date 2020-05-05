@@ -7,7 +7,6 @@ const ArticleForm = (props) => {
   const fileInput = createRef();
 
   useEffect(() => {
-    console.log(props.article);
     if (props.article.id) {
       props.history.push(`/articles/${props.article.id}`);
     }
