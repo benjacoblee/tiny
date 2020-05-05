@@ -19,14 +19,14 @@ router.get("/", async (req, res) => {
       .populate({
         path: "postedBy",
         model: "User",
-        select: ["name", "email"]
+        select: ["fullName", "email"]
       })
       .populate({
         path: "comments",
         populate: {
           path: "postedBy",
           model: "User",
-          select: ["name", "email"]
+          select: ["fullName", "email"]
         }
       });
 
@@ -43,14 +43,14 @@ router.get("/:id", async (req, res) => {
       .populate({
         path: "postedBy",
         model: "User",
-        select: ["name", "email"]
+        select: ["fullName", "email"]
       })
       .populate({
         path: "comments",
         populate: {
           path: "postedBy",
           model: "User",
-          select: ["name", "email"]
+          select: ["fullName", "email"]
         }
       });
 
@@ -107,7 +107,7 @@ router.post(
         image,
         postedBy: user._id
       }).save();
-      article.populate("postedBy", ["name"], (err) => {
+      article.populate("postedBy", ["fullName"], (err) => {
         res.json(article);
       });
     } catch (err) {
@@ -169,7 +169,7 @@ router.patch(
         .populate({
           path: "postedBy",
           model: "User",
-          select: ["name"]
+          select: ["fullName"]
         })
         .populate(
           {
@@ -177,7 +177,7 @@ router.patch(
             populate: {
               path: "postedBy",
               model: "User",
-              select: ["name"]
+              select: ["fullName"]
             }
           },
           (err) => {

@@ -38,7 +38,7 @@ router.post(
         .populate({
           path: "postedBy",
           model: "User",
-          select: ["name", "email"]
+          select: ["fullName", "email"]
         })
         .populate(
           {
@@ -46,7 +46,7 @@ router.post(
             populate: {
               path: "postedBy",
               model: "User",
-              select: ["name", "email"]
+              select: ["fullName", "email"]
             }
           },
           (err) => {
@@ -95,14 +95,14 @@ router.patch(
       let article = await Article.findById(id)
         .populate({
           path: "postedBy",
-          select: ["name", "email"],
+          select: ["fullName", "email"],
           model: "User"
         })
         .populate({
           path: "comments",
           populate: {
             path: "postedBy",
-            select: ["name", "email"],
+            select: ["fullName", "email"],
             model: "User"
           }
         });
@@ -139,14 +139,14 @@ router.delete("/:commentID", auth, async (req, res) => {
     article
       .populate({
         path: "postedBy",
-        select: ["name", "email"]
+        select: ["fullName", "email"]
       })
       .populate(
         {
           path: "comments",
           populate: {
             path: "postedBy",
-            select: ["name", "email"]
+            select: ["fullName", "email"]
           }
         },
         (err) => {

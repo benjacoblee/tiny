@@ -63,7 +63,7 @@ const Article = (props) => {
             </small>{" "}
           </h6>
           {image ? <img style={{ maxWidth: "100%" }} src={image}></img> : null}
-          <p>{body}</p>
+          <p className="mt-3">{body}</p>
           {isAuthor ? (
             <p>
               <Link to={`/articles/${props.article._id}/edit`}>

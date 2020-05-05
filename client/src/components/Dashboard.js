@@ -18,7 +18,11 @@ const Dashboard = ({ dashboard, fetchDashboardDetails, history }) => {
     if (articles.length > 0) {
       return articles.map((article) => {
         return (
-          <Link className="text-center" to={`/articles/${article._id}`}>
+          <Link
+            key={article._id}
+            className="text-center"
+            to={`/articles/${article._id}`}
+          >
             {article.title}
           </Link>
         );
@@ -29,11 +33,16 @@ const Dashboard = ({ dashboard, fetchDashboardDetails, history }) => {
   const renderProfile = () => {
     if (user) {
       return (
-        <div>
-          {user.name ? <p>{user.name}</p> : null}
-          {user.bio ? <p>{user.bio}</p> : null}
-          <Link className="text-center" to="/profile/edit">
-            Add Profile Details
+        <div className="row">
+          <div className="col-6">
+            <img src={user.avatar} style={{ maxWidth: "100%" }} />
+          </div>
+          <div className="col-6">
+            {user.name ? <p>{user.name}</p> : null}
+            {user.bio ? <p>{user.bio}</p> : null}
+          </div>
+          <Link className="mx-auto" to="/profile/edit">
+            Edit Profile Details
           </Link>
         </div>
       );
