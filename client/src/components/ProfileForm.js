@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, createRef } from "react";
 import { Form, Button } from "react-bootstrap";
 import { connect } from "react-redux";
 import * as actions from "../actions";
@@ -8,6 +8,8 @@ const bioPlaceholder =
 
 const ProfileForm = (props) => {
   const token = sessionStorage.getItem("jwtToken");
+  const fileInput = createRef();
+
   useEffect(() => {
     if (!token) {
       return props.history.push("/");
@@ -16,43 +18,61 @@ const ProfileForm = (props) => {
   }, []);
 
   const [formData, updateFormData] = useState({
-    name: "",
+    fullName: "",
     bio: ""
   });
 
-  const { name, bio } = formData;
-
   const handleChange = (e) => {
-    updateFormData({ [e.target.name]: e.target.value });
+    updateFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const userID = props.auth._id;
+    formData.file = fileInput.current.files[0];
+    await props.submitBio(userID, formData).then(() => {
+      props.history.push(`/dashboard`);
+    });
   };
 
   return (
     <div className="mt-3">
-      <Form onSubmit={handleSubmit}>
+      <Form encType="multipart/form-data" onSubmit={handleSubmit}>
         <Form.Group controlId="exampleForm.ControlInput1">
           <Form.Label>Name</Form.Label>
           <Form.Control
             type="text"
-            name="name"
+            name="fullName"
             onChange={handleChange}
             placeholder={props.auth.name ? props.auth.name : "Mark"}
-            value={name}
+            value={formData.fullName}
           />
+        </Form.Group>
+        <Form.Group controlId="formBasicEmail">
+          <Form.Label>
+            Avatar <small className="text-muted">Optional</small>
+          </Form.Label>
+          <p>
+            <input
+              type="file"
+              name="fileName"
+              accept="image/*"
+              ref={fileInput}
+            />
+          </p>
         </Form.Group>
         <Form.Group controlId="exampleForm.ControlTextarea1">
           <Form.Label>Bio</Form.Label>
           <Form.Control
             as="textarea"
             rows="3"
-            onChange={handleChange}
+            name="bio"
             placeholder={props.auth.bio ? props.auth.bio : bioPlaceholder}
-            value={bio}
+            onChange={handleChange}
+            value={formData.bio}
           />
         </Form.Group>
+
         <Button type="submit">Submit</Button>
       </Form>
     </div>
