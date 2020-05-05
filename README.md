@@ -53,3 +53,4 @@ Front-end workflow consisted of React component creation; writing actions and ac
 ## Unsolved Problems
 - Prevent re-fetching of data in Articles component
 - Re-fetch articles when article has been updated
+- Improve UI experience for image load
