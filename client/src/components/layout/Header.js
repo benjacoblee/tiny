@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment } from "react";
 import {
   Navbar,
   Nav,
@@ -15,7 +15,9 @@ const Header = () => {
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Navbar.Brand>
-        <Link to='/' style={{color: "white"}} href="/">Tiny</Link>
+        <Link to="/" style={{ color: "white" }} href="/">
+          Tiny
+        </Link>
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
@@ -53,7 +55,11 @@ const Header = () => {
         </Nav>
 
         <Form inline>
-          <FormControl type="text" placeholder="Search" className="mr-sm-2 mb-2" />
+          <FormControl
+            type="text"
+            placeholder="Search"
+            className="mr-sm-2 mb-2"
+          />
           <Button variant="outline-light">Search</Button>
         </Form>
       </Navbar.Collapse>

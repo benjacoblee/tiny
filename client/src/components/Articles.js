@@ -5,13 +5,12 @@ import { Link } from "react-router-dom";
 import * as actions from "../actions";
 import Moment from "react-moment";
 
-const Articles = (props) => {
+const Articles = ({ fetchArticles, advancePage, page, articles }) => {
   const [isFetching, setIsFetching] = useState(false);
 
   useEffect(() => {
-    props.fetchArticles(props.page);
-    props.advancePage();
-    console.log("MOUNTING");
+    fetchArticles(page);
+    advancePage();
   }, []);
 
   useEffect(() => {
@@ -21,8 +20,8 @@ const Articles = (props) => {
 
   useEffect(() => {
     if (!isFetching) return;
-    props.fetchArticles(props.page);
-    props.advancePage();
+    fetchArticles(page);
+    advancePage();
     setIsFetching(false);
   }, [isFetching]);
 
@@ -60,14 +59,14 @@ const Articles = (props) => {
   };
 
   const renderArticles = () => {
-    if (props.articles.length > 0) {
-      return props.articles.map((article) => {
+    if (articles.length > 0) {
+      return articles.map((article) => {
         return (
           <Card key={article._id} className="my-3">
             <Card.Body>
               <Card.Title>
                 {article.title}{" "}
-                <small style={{fontSize: ".6em"}} className="text-muted">
+                <small style={{ fontSize: ".6em" }} className="text-muted">
                   {" "}
                   {renderReadingSpeed(article.body)} minute read
                 </small>

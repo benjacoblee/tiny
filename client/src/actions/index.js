@@ -127,11 +127,7 @@ export const submitArticle = (articleDetails) => async (dispatch) => {
 
       console.log(putURL);
 
-      let putFileResponse = await axios.put(
-        putURL,
-        articleDetails.file,
-        options
-      );
+      await axios.put(putURL, articleDetails.file, options);
 
       articleDetails.image = `https://tiny-blog-app.s3.ap-southeast-1.amazonaws.com/${articleDetails.file.name}`;
 
@@ -141,8 +137,6 @@ export const submitArticle = (articleDetails) => async (dispatch) => {
           "x-auth-token": token
         }
       });
-
-      console.log(response);
 
       return dispatch({
         type: SUBMIT_ARTICLE,
