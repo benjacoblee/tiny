@@ -28,13 +28,15 @@ const Dashboard = ({ dashboard, fetchDashboardDetails, history }) => {
 
   const renderProfile = () => {
     if (user) {
-      if (!user.name && !user.bio) {
-        return (
+      return (
+        <div>
+          {user.name ? <p>{user.name}</p> : null}
+          {user.bio ? <p>{user.bio}</p> : null}
           <Link className="text-center" to="/profile/edit">
             Add Profile Details
           </Link>
-        );
-      }
+        </div>
+      );
     }
   };
 
