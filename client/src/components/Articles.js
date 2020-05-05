@@ -81,6 +81,9 @@ const Articles = ({ fetchArticles, advancePage, page, articles }) => {
                   </span>
                 </small>
               </Card.Subtitle>
+              {article.image ? (
+                <img style={{ maxWidth: "100%" }} src={article.image} />
+              ) : null}
               {truncateBody(article.body, article._id)}
             </Card.Body>
           </Card>

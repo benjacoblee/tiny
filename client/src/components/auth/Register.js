@@ -25,9 +25,7 @@ const Register = (props) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (password === password2) {
-      props.registerUser(formData);
-    }
+    props.registerUser(formData);
   };
 
   return (

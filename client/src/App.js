@@ -30,7 +30,7 @@ const App = (props) => {
     <Router>
       <div className="App">
         <Header />
-        <Alerts alerts={props.auth.alerts} variant={props.auth.variant} />
+        <Alerts alerts={props.alerts.message} variant={props.alerts.variant} />
         <Container>
           <Route exact path="/" component={Articles} />
           <Route exact path="/login" component={Login} />
@@ -52,7 +52,7 @@ const App = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  return { auth: state.auth };
+  return { auth: state.auth, alerts: state.alerts };
 };
 
 export default connect(mapStateToProps, actions)(App);

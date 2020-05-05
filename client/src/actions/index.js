@@ -1,5 +1,11 @@
 import axios from "axios";
 import {
+  ALERT_LOGIN_SUCCESS,
+  ALERT_LOGIN_FAIL,
+  ALERT_LOGOUT_SUCCESS,
+  ALERT_REGISTER_SUCCESS,
+  ALERT_REGISTER_FAIL,
+  ALERT_SUBMITTING_ARTICLE,
   AUTH_USER,
   REGISTER_USER,
   FETCH_USER,
@@ -24,24 +30,32 @@ const clearAlert = (type) => (dispatch) => {
 export const authUser = (loginDetails) => async (dispatch) => {
   try {
     let response = await axios.post("/api/auth", loginDetails);
+
+    console.log("DISPATCHING");
+    dispatch({
+      type: ALERT_LOGIN_SUCCESS,
+      payload: {
+        message: [{ msg: "Successfully logged in!" }],
+        variant: "success"
+      }
+    });
+
     dispatch({
       type: AUTH_USER,
       payload: {
-        alerts: [{ msg: "Successfully logged in!" }],
-        variant: "success",
         token: response.data
       }
     });
 
-    clearAlert(AUTH_USER)(dispatch);
+    clearAlert(ALERT_LOGIN_SUCCESS)(dispatch);
   } catch (err) {
     console.log(err.response);
     dispatch({
-      type: AUTH_USER,
-      payload: { alerts: err.response.data.errors, variant: "danger" }
+      type: ALERT_LOGIN_FAIL,
+      payload: { message: err.response.data.errors, variant: "danger" }
     });
 
-    clearAlert(AUTH_USER)(dispatch);
+    clearAlert(ALERT_LOGIN_FAIL)(dispatch);
   }
 
   // return {
@@ -52,36 +66,62 @@ export const authUser = (loginDetails) => async (dispatch) => {
 
 export const logoutUser = () => async (dispatch) => {
   dispatch({
+    type: ALERT_LOGOUT_SUCCESS,
+    payload: {
+      message: [{ msg: "Successfully logged out!" }],
+      variant: "success"
+    }
+  });
+
+  dispatch({
     type: LOGOUT_USER,
     payload: {
-      alerts: [{ msg: "Successfully logged out!" }],
-      variant: "success",
       token: null
     }
   });
 
-  clearAlert(LOGOUT_USER)(dispatch);
+  clearAlert(ALERT_LOGOUT_SUCCESS)(dispatch);
 };
 
-export const registerUser = (loginDetails) => async (dispatch) => {
+export const registerUser = (registrationDetails) => async (dispatch) => {
+  if (registrationDetails.password !== registrationDetails.password2) {
+    dispatch({
+      type: ALERT_REGISTER_FAIL,
+      payload: {
+        message: [{ msg: "Passwords must match!" }],
+        variant: "warning"
+      }
+    });
+    return clearAlert(ALERT_REGISTER_FAIL)(dispatch);
+  }
+
   try {
-    let response = await axios.post("/api/users", loginDetails);
+    let response = await axios.post("/api/users", registrationDetails);
+
+    dispatch({
+      type: ALERT_REGISTER_SUCCESS,
+      payload: {
+        message: [{ msg: "Successfully registered!" }],
+        variant: "success"
+      }
+    });
+
     dispatch({
       type: REGISTER_USER,
       payload: {
-        alerts: [{ msg: "Successfully registered!" }],
-        variant: "success",
         token: response.data
       }
     }); // get token, keep somewhere
+
+    clearAlert(ALERT_REGISTER_SUCCESS)(dispatch);
   } catch (err) {
     console.log(err);
     dispatch({
-      type: REGISTER_USER,
-      payload: { alerts: err.response.data.errors, variant: "danger" }
+      type: ALERT_LOGIN_FAIL,
+      payload: { message: err.response.data.errors, variant: "danger" }
     });
 
-    clearAlert(REGISTER_USER)(dispatch);
+    clearAlert(ALERT_LOGIN_FAIL)(dispatch);
   }
 
   // return {
@@ -105,6 +145,16 @@ export const fetchUser = (token) => async (dispatch) => {
 
 export const submitArticle = (articleDetails) => async (dispatch) => {
   const token = sessionStorage.getItem("jwtToken");
+
+  dispatch({
+    type: ALERT_SUBMITTING_ARTICLE,
+    payload: {
+      message: [{ msg: "Submitting article, please wait..." }],
+      variant: "warning"
+    }
+  });
+
+  clearAlert(ALERT_SUBMITTING_ARTICLE)(dispatch);
 
   if (articleDetails.file) {
     const contentType = articleDetails.file.type;

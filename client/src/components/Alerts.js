@@ -1,8 +1,8 @@
 import React, { Fragment } from "react";
 import { Alert } from "react-bootstrap";
 
-const Errors = (props) => {
-  const renderErrors = () => {
+const Alerts = (props) => {
+  const renderAlerts = () => {
     if (props.alerts) {
       return props.alerts.map((alert, index) => {
         return (
@@ -13,7 +13,7 @@ const Errors = (props) => {
       });
     }
   };
-  return <Fragment>{renderErrors()}</Fragment>;
+  return <Fragment>{renderAlerts()}</Fragment>;
 };
 
-export default Errors;
+export default Alerts;
