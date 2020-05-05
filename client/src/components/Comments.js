@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import Moment from "react-moment";
 
 const Comments = (props) => {
   const renderComments = () => {
@@ -6,12 +7,23 @@ const Comments = (props) => {
       return props.comments.map((comment) => {
         return (
           <div key={comment._id}>
-            <p>
-              {comment.postedBy.name
-                ? comment.postedBy.name
+            <img
+              className="mr-2"
+              src={comment.postedBy.avatar}
+              style={{ maxWidth: "20px" }}
+            ></img>
+            <span className="mb-0">
+              {comment.postedBy.fullName
+                ? comment.postedBy.fullName
                 : comment.postedBy.email}
-            </p>
-            <p>{comment.text}</p>
+              <span className="ml-1">
+                <small className="text-muted">
+                  <Moment format="DD MMM YYYY">{comment.dateCreated}</Moment>
+                </small>
+              </span>
+            </span>
+
+            <p className="mt-2">{comment.text}</p>
           </div>
         );
       });

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Card } from "react-bootstrap";
 import * as actions from "../actions";
 import Comments from "./Comments";
 
@@ -38,6 +38,29 @@ const Article = (props) => {
     commentsEndRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
+  const renderBio = () => {
+    const { avatar, fullName, email, bio } = props.article.postedBy;
+    return (
+      <div className="mt-3">
+        <Card>
+          <Card.Body>
+            <div className="row">
+              <div className="col-3">
+                {avatar ? (
+                  <img src={avatar} style={{ maxWidth: "100%" }}></img>
+                ) : null}
+              </div>
+              <div className="col-9">
+                <Card.Title>{fullName ? fullName : email}</Card.Title>
+                <Card.Text>{bio ? bio : null}</Card.Text>
+              </div>
+            </div>
+          </Card.Body>
+        </Card>
+      </div>
+    );
+  };
+
   if (props.article.title) {
     const isAuthor = props.article.postedBy._id === props.auth._id;
     let {
@@ -52,9 +75,18 @@ const Article = (props) => {
     return (
       <div>
         <div className="mt-3">
-          <h5>{title}</h5>
+          <h5>
+            {title}{" "}
+            {isAuthor ? (
+              <small>
+                <Link to={`/articles/${props.article._id}/edit`}>
+                  Edit Article
+                </Link>
+              </small>
+            ) : null}
+          </h5>
           <h6>
-            {postedBy.name ? postedBy.name : postedBy.email}{" "}
+            {postedBy.fullName ? postedBy.fullName : postedBy.email}{" "}
             <small>
               {dateEdited ? "edited " : null}
               <Moment format="DD MMM YYYY">
@@ -64,17 +96,15 @@ const Article = (props) => {
           </h6>
           {image ? <img style={{ maxWidth: "100%" }} src={image}></img> : null}
           <p className="mt-3">{body}</p>
-          {isAuthor ? (
-            <p>
-              <Link to={`/articles/${props.article._id}/edit`}>
-                Edit Article
-              </Link>
-            </p>
-          ) : null}
+          <hr />
+          {renderBio()}
+
           {token ? (
-            <Form onSubmit={handleSubmit}>
+            <Form className="mt-3" onSubmit={handleSubmit}>
               <Form.Group controlId="exampleForm.ControlTextarea1">
-                <Form.Label>Post a comment</Form.Label>
+                <Form.Label style={{ textDecoration: "underline" }}>
+                  Join the discussion!
+                </Form.Label>
                 <Form.Control
                   as="textarea"
                   rows="3"

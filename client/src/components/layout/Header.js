@@ -40,7 +40,7 @@ const Header = () => {
                 Dashboard
               </Nav.Link>
               <Nav.Link as={Link} to="/logout" href="/logout">
-                Log out
+                Log Out
               </Nav.Link>
             </Fragment>
           )}

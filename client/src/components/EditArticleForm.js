@@ -13,9 +13,6 @@ const EditArticleForm = ({
   const { id } = match.params;
   useEffect(() => {
     fetchArticle(id);
-    if (article.id) {
-      history.push(`/articles/${article.id}`);
-    }
   }, [fetchArticle, history, id, article.id]);
   const token = sessionStorage.getItem("jwtToken");
 
@@ -36,9 +33,11 @@ const EditArticleForm = ({
     updateFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    editArticle(formData);
+    await editArticle(formData).then(() => {
+      history.push(`/articles/${article.id}`);
+    });
   };
 
   return (

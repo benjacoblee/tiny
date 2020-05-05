@@ -38,7 +38,7 @@ router.post(
         .populate({
           path: "postedBy",
           model: "User",
-          select: ["fullName", "email"]
+          select: ["fullName", "email", "avatar"]
         })
         .populate(
           {
@@ -46,7 +46,7 @@ router.post(
             populate: {
               path: "postedBy",
               model: "User",
-              select: ["fullName", "email"]
+              select: ["fullName", "email", "avatar"]
             }
           },
           (err) => {

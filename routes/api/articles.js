@@ -43,14 +43,14 @@ router.get("/:id", async (req, res) => {
       .populate({
         path: "postedBy",
         model: "User",
-        select: ["fullName", "email"]
+        select: ["fullName", "email", "avatar", "bio"]
       })
       .populate({
         path: "comments",
         populate: {
           path: "postedBy",
           model: "User",
-          select: ["fullName", "email"]
+          select: ["fullName", "email", "avatar", "bio"]
         }
       });
 
