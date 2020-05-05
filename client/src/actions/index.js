@@ -5,6 +5,7 @@ import {
   ALERT_LOGOUT_SUCCESS,
   ALERT_REGISTER_SUCCESS,
   ALERT_REGISTER_FAIL,
+  ALERT_SUBMITTING_ARTICLE,
   AUTH_USER,
   REGISTER_USER,
   FETCH_USER,
@@ -144,6 +145,16 @@ export const fetchUser = (token) => async (dispatch) => {
 
 export const submitArticle = (articleDetails) => async (dispatch) => {
   const token = sessionStorage.getItem("jwtToken");
+
+  dispatch({
+    type: ALERT_SUBMITTING_ARTICLE,
+    payload: {
+      message: [{ msg: "Submitting article, please wait..." }],
+      variant: "warning"
+    }
+  });
+
+  clearAlert(ALERT_SUBMITTING_ARTICLE)(dispatch);
 
   if (articleDetails.file) {
     const contentType = articleDetails.file.type;

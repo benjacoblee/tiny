@@ -3,7 +3,8 @@ import {
   ALERT_LOGIN_FAIL,
   ALERT_LOGOUT_SUCCESS,
   ALERT_REGISTER_SUCCESS,
-  ALERT_REGISTER_FAIL
+  ALERT_REGISTER_FAIL,
+  ALERT_SUBMITTING_ARTICLE
 } from "../actions/types";
 
 export default (state = [], action) => {
@@ -17,6 +18,8 @@ export default (state = [], action) => {
     case ALERT_REGISTER_SUCCESS:
       return action.payload;
     case ALERT_REGISTER_FAIL:
+      return action.payload;
+    case ALERT_SUBMITTING_ARTICLE:
       return action.payload;
     default:
       return state;

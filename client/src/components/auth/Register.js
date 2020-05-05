@@ -25,7 +25,6 @@ const Register = (props) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-
     props.registerUser(formData);
   };
 
