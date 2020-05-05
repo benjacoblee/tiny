@@ -19,7 +19,8 @@ import {
   LOGOUT_USER,
   POST_COMMENT,
   ADVANCE_PAGE,
-  SEARCH_ARTICLES
+  SEARCH_ARTICLES,
+  ALERT_SEARCHING_ARTICLE
 } from "./types";
 
 const clearAlert = (type) => (dispatch) => {
@@ -372,6 +373,14 @@ export const submitBio = (userID, bioDetails) => async (dispatch) => {
 };
 
 export const searchArticles = (query) => async (dispatch) => {
+  dispatch({
+    type: ALERT_SEARCHING_ARTICLE,
+    payload: {
+      message: [{ msg: "Searching, please wait..." }],
+      variant: "warning"
+    }
+  });
+  clearAlert(ALERT_SEARCHING_ARTICLE)(dispatch);
   const response = await axios.get(`/api/articles?q=${query}`);
   dispatch({
     type: SEARCH_ARTICLES,

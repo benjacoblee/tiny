@@ -17,6 +17,7 @@ Basically a blog.
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
     "moment": "^2.24.0",
+    "query-string": "^6.12.1",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-dom": "^16.13.1",
