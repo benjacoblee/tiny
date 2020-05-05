@@ -36,7 +36,7 @@ const EditArticleForm = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
     await editArticle(formData).then(() => {
-      history.push(`/articles/${article.id}`);
+      history.push(`/articles/${id}`);
     });
   };
 
