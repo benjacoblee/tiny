@@ -44,7 +44,7 @@ const ProfileForm = (props) => {
             type="text"
             name="fullName"
             onChange={handleChange}
-            placeholder={props.auth.name ? props.auth.name : "Mark"}
+            placeholder={props.auth.fullName ? props.auth.fullName : "Mark"}
             value={formData.fullName}
           />
         </Form.Group>

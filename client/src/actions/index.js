@@ -27,7 +27,7 @@ const clearAlert = (type) => (dispatch) => {
       type,
       payload: ""
     });
-  }, 2000);
+  }, 1000);
 };
 
 export const authUser = (loginDetails) => async (dispatch) => {
@@ -306,8 +306,6 @@ export const submitBio = (userID, bioDetails) => async (dispatch) => {
     }
   });
 
-  clearAlert(ALERT_SUBMITTING_ARTICLE)(dispatch);
-
   if (bioDetails.file) {
     const contentType = bioDetails.file.type;
     const generatePutUrl = "/generate-put-url";
@@ -340,6 +338,7 @@ export const submitBio = (userID, bioDetails) => async (dispatch) => {
         }
       });
 
+      clearAlert(ALERT_SUBMITTING_BIO)(dispatch);
       return dispatch({
         type: SUBMIT_ARTICLE,
         payload: response.data._id
@@ -354,7 +353,7 @@ export const submitBio = (userID, bioDetails) => async (dispatch) => {
         "x-auth-token": token
       }
     });
-
+    clearAlert(ALERT_SUBMITTING_BIO)(dispatch);
     return dispatch({
       type: SUBMIT_ARTICLE,
       payload: response.data._id
