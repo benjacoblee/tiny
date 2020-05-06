@@ -75,7 +75,7 @@ const Header = (props) => {
             type="text"
             name="searchData"
             placeholder="Search"
-            className="mr-sm-2 mb-2"
+            className="mr-sm-2"
             value={searchQuery}
             onChange={handleChange}
           />
