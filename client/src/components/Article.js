@@ -82,6 +82,18 @@ const Article = (props) => {
                 <Link to={`/articles/${props.article._id}/edit`}>
                   Edit Article
                 </Link>
+                <Link
+                  to={`/articles/${props.article._id}/delete`}
+                  onClick={async (e) => {
+                    e.preventDefault();
+                    await props.deleteArticle(props.article._id).then(() => {
+                      props.history.push("/");
+                    });
+                  }}
+                >
+                  {" "}
+                  Delete Article
+                </Link>
               </small>
             ) : null}
           </h5>

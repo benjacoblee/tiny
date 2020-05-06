@@ -7,13 +7,14 @@ import {
   ALERT_REGISTER_FAIL,
   ALERT_SUBMITTING_ARTICLE,
   ALERT_SUBMITTING_BIO,
+  ALERT_DELETED_ARTICLE,
   AUTH_USER,
   REGISTER_USER,
   FETCH_USER,
-  SUBMIT_BIO,
   FETCH_DASHBOARD_DETAILS,
   SUBMIT_ARTICLE,
   EDIT_ARTICLE,
+  DELETE_ARTICLE,
   FETCH_ARTICLE,
   FETCH_ARTICLES,
   LOGOUT_USER,
@@ -247,6 +248,31 @@ export const editArticle = (articleDetails) => async (dispatch) => {
     type: EDIT_ARTICLE,
     payload: response.data._id
   });
+};
+
+export const deleteArticle = (id) => async (dispatch) => {
+  const token = sessionStorage.getItem("jwtToken");
+
+  try {
+    let response = await axios.delete(`/api/articles/${id}`, {
+      headers: {
+        "x-auth-token": token
+      }
+    });
+    if (response) {
+      dispatch({
+        type: ALERT_DELETED_ARTICLE,
+        payload: {
+          message: [{ msg: "Successfully deleted article!" }],
+          variant: "success"
+        }
+      });
+
+      clearAlert(ALERT_DELETED_ARTICLE)(dispatch);
+    }
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 export const fetchArticle = (id) => async (dispatch) => {
