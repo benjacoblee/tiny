@@ -10,7 +10,6 @@ export const AUTH_USER = "AUTH_USER";
 export const LOGOUT_USER = "LOGOUT_USER";
 export const REGISTER_USER = "REGISTER_USER";
 export const FETCH_USER = "FETCH_USER";
-export const SUBMIT_BIO = "SUBMIT_BIO";
 
 export const FETCH_DASHBOARD_DETAILS = "FETCH_DASHBOARD_DETAILS";
 export const SUBMIT_ARTICLE = "SUBMIT_ARTICLE";

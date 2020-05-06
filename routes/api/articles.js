@@ -40,14 +40,26 @@ router.get("/", async (req, res) => {
   }
 
   if (query) {
-    const articlesArr = [];
     let articles = await Article.find({
       $or: [
         { title: { $regex: query, $options: "i" } },
         { body: { $regex: query, $options: "i" } },
         { tags: { $regex: query, $options: "i" } }
       ]
-    });
+    })
+      .populate({
+        path: "postedBy",
+        model: "User",
+        select: ["fullName", "email"]
+      })
+      .populate({
+        path: "comments",
+        populate: {
+          path: "postedBy",
+          model: "User",
+          select: ["fullName", "email"]
+        }
+      });
 
     res.json(articles);
   }
