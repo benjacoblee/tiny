@@ -4,6 +4,7 @@ import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
 import { Form, Button, Card } from "react-bootstrap";
+import { FacebookProvider, ShareButton } from "react-facebook";
 import * as actions from "../actions";
 import Comments from "./Comments";
 
@@ -108,6 +109,11 @@ const Article = (props) => {
           </h6>
           {image ? <img style={{ maxWidth: "100%" }} src={image}></img> : null}
           <p className="mt-3">{body}</p>
+          <FacebookProvider appId="482577102470210">
+            <ShareButton href={window.location.href} quote={title}>
+              Share
+            </ShareButton>
+          </FacebookProvider>
           <hr />
           {renderBio()}
 
