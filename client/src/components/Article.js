@@ -110,8 +110,12 @@ const Article = (props) => {
           {image ? <img style={{ maxWidth: "100%" }} src={image}></img> : null}
           <p className="mt-3">{body}</p>
           <FacebookProvider appId="482577102470210">
-            <ShareButton href={window.location.href} quote={title}>
-              Share
+            <ShareButton
+              className="btn btn-primary"
+              href={window.location.href}
+              quote={title}
+            >
+              Share <i className="fab fa-facebook-square"></i>
             </ShareButton>
           </FacebookProvider>
           <hr />
