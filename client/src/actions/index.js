@@ -28,8 +28,6 @@ export const authUser = (loginDetails) => async (dispatch) => {
   try {
     let response = await axios.post("/api/auth", loginDetails);
 
-    console.log("DISPATCHING");
-
     dispatch({
       type: ALERT,
       payload: {
@@ -47,8 +45,6 @@ export const authUser = (loginDetails) => async (dispatch) => {
       }
     });
   } catch (err) {
-    console.log(err.response);
-
     dispatch({
       type: ALERT,
       payload: { message: err.response.data.errors, variant: "danger" }
@@ -114,8 +110,6 @@ export const registerUser = (registrationDetails) => async (dispatch) => {
       }
     }); // get token, keep somewhere
   } catch (err) {
-    console.log(err);
-
     dispatch({
       type: ALERT,
       payload: { message: err.response.data.errors, variant: "danger" }
@@ -172,8 +166,6 @@ export const submitArticle = (articleDetails) => async (dispatch) => {
         data: { putURL }
       } = putUrlResponse;
 
-      console.log(putURL);
-
       await axios.put(putURL, articleDetails.file, options);
 
       articleDetails.image = `https://tiny-blog-app.s3.ap-southeast-1.amazonaws.com/${articleDetails.file.name}`;
@@ -213,7 +205,6 @@ export const submitArticle = (articleDetails) => async (dispatch) => {
 
 export const editArticle = (articleDetails) => async (dispatch) => {
   const token = sessionStorage.getItem("jwtToken");
-  console.log(articleDetails.id);
 
   dispatch({
     type: ALERT,
@@ -287,9 +278,6 @@ export const fetchArticles = (page) => async (dispatch) => {
 };
 
 export const postComment = (articleID, commentData) => async (dispatch) => {
-  console.log(articleID, "is article id");
-  console.log(commentData, "is commentdad");
-
   try {
     const token = sessionStorage.getItem("jwtToken");
     let response = await axios.post(
@@ -306,9 +294,7 @@ export const postComment = (articleID, commentData) => async (dispatch) => {
       type: POST_COMMENT,
       payload: response.data
     });
-  } catch (err) {
-    console.log(err);
-  }
+  } catch (err) {}
 };
 
 export const advancePage = () => {
@@ -359,8 +345,6 @@ export const submitBio = (userID, bioDetails) => async (dispatch) => {
       const {
         data: { putURL }
       } = putUrlResponse;
-
-      console.log(putURL);
 
       await axios.put(putURL, bioDetails.file, options);
 
