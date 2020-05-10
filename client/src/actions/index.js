@@ -1,27 +1,18 @@
 import axios from "axios";
 import {
-  ALERT_LOGIN_SUCCESS,
-  ALERT_LOGIN_FAIL,
-  ALERT_LOGOUT_SUCCESS,
-  ALERT_REGISTER_SUCCESS,
-  ALERT_REGISTER_FAIL,
-  ALERT_SUBMITTING_ARTICLE,
-  ALERT_SUBMITTING_BIO,
-  ALERT_DELETED_ARTICLE,
+  ALERT,
   AUTH_USER,
   REGISTER_USER,
   FETCH_USER,
   FETCH_DASHBOARD_DETAILS,
   SUBMIT_ARTICLE,
   EDIT_ARTICLE,
-  DELETE_ARTICLE,
   FETCH_ARTICLE,
   FETCH_ARTICLES,
   LOGOUT_USER,
   POST_COMMENT,
   ADVANCE_PAGE,
-  SEARCH_ARTICLES,
-  ALERT_SEARCHING_ARTICLE
+  SEARCH_ARTICLES
 } from "./types";
 
 const clearAlert = (type) => (dispatch) => {
@@ -40,14 +31,14 @@ export const authUser = (loginDetails) => async (dispatch) => {
     console.log("DISPATCHING");
 
     dispatch({
-      type: ALERT_LOGIN_SUCCESS,
+      type: ALERT,
       payload: {
         message: [{ msg: "Successfully logged in!" }],
         variant: "success"
       }
     });
 
-    clearAlert(ALERT_LOGIN_SUCCESS)(dispatch);
+    clearAlert(ALERT)(dispatch);
 
     dispatch({
       type: AUTH_USER,
@@ -59,11 +50,11 @@ export const authUser = (loginDetails) => async (dispatch) => {
     console.log(err.response);
 
     dispatch({
-      type: ALERT_LOGIN_FAIL,
+      type: ALERT,
       payload: { message: err.response.data.errors, variant: "danger" }
     });
 
-    clearAlert(ALERT_LOGIN_FAIL)(dispatch);
+    clearAlert(ALERT)(dispatch);
   }
 
   // return {
@@ -74,14 +65,14 @@ export const authUser = (loginDetails) => async (dispatch) => {
 
 export const logoutUser = () => async (dispatch) => {
   dispatch({
-    type: ALERT_LOGOUT_SUCCESS,
+    type: ALERT,
     payload: {
       message: [{ msg: "Successfully logged out!" }],
       variant: "success"
     }
   });
 
-  clearAlert(ALERT_LOGOUT_SUCCESS)(dispatch);
+  clearAlert(ALERT)(dispatch);
 
   dispatch({
     type: LOGOUT_USER,
@@ -94,27 +85,27 @@ export const logoutUser = () => async (dispatch) => {
 export const registerUser = (registrationDetails) => async (dispatch) => {
   if (registrationDetails.password !== registrationDetails.password2) {
     dispatch({
-      type: ALERT_REGISTER_FAIL,
+      type: ALERT,
       payload: {
         message: [{ msg: "Passwords must match!" }],
         variant: "warning"
       }
     });
-    return clearAlert(ALERT_REGISTER_FAIL)(dispatch);
+    return clearAlert(ALERT)(dispatch);
   }
 
   try {
     let response = await axios.post("/api/users", registrationDetails);
 
     dispatch({
-      type: ALERT_REGISTER_SUCCESS,
+      type: ALERT,
       payload: {
         message: [{ msg: "Successfully registered!" }],
         variant: "success"
       }
     });
 
-    clearAlert(ALERT_REGISTER_SUCCESS)(dispatch);
+    clearAlert(ALERT)(dispatch);
 
     dispatch({
       type: REGISTER_USER,
@@ -126,11 +117,11 @@ export const registerUser = (registrationDetails) => async (dispatch) => {
     console.log(err);
 
     dispatch({
-      type: ALERT_LOGIN_FAIL,
+      type: ALERT,
       payload: { message: err.response.data.errors, variant: "danger" }
     });
 
-    clearAlert(ALERT_LOGIN_FAIL)(dispatch);
+    clearAlert(ALERT)(dispatch);
   }
 
   // return {
@@ -155,7 +146,7 @@ export const submitArticle = (articleDetails) => async (dispatch) => {
   const token = sessionStorage.getItem("jwtToken");
 
   dispatch({
-    type: ALERT_SUBMITTING_ARTICLE,
+    type: ALERT,
     payload: {
       message: [{ msg: "Submitting article, please wait..." }],
       variant: "warning"
@@ -194,7 +185,7 @@ export const submitArticle = (articleDetails) => async (dispatch) => {
         }
       });
 
-      clearAlert(ALERT_SUBMITTING_ARTICLE)(dispatch);
+      clearAlert(ALERT)(dispatch);
 
       return dispatch({
         type: SUBMIT_ARTICLE,
@@ -211,7 +202,7 @@ export const submitArticle = (articleDetails) => async (dispatch) => {
       }
     });
 
-    clearAlert(ALERT_SUBMITTING_ARTICLE)(dispatch);
+    clearAlert(ALERT)(dispatch);
 
     return dispatch({
       type: SUBMIT_ARTICLE,
@@ -225,7 +216,7 @@ export const editArticle = (articleDetails) => async (dispatch) => {
   console.log(articleDetails.id);
 
   dispatch({
-    type: ALERT_SUBMITTING_ARTICLE,
+    type: ALERT,
     payload: {
       message: [{ msg: "Submitting edited article, please wait..." }],
       variant: "warning"
@@ -242,7 +233,7 @@ export const editArticle = (articleDetails) => async (dispatch) => {
     }
   );
 
-  clearAlert(ALERT_SUBMITTING_ARTICLE)(dispatch);
+  clearAlert(ALERT)(dispatch);
 
   dispatch({
     type: EDIT_ARTICLE,
@@ -261,14 +252,14 @@ export const deleteArticle = (id) => async (dispatch) => {
     });
     if (response) {
       dispatch({
-        type: ALERT_DELETED_ARTICLE,
+        type: ALERT,
         payload: {
           message: [{ msg: "Successfully deleted article!" }],
           variant: "success"
         }
       });
 
-      clearAlert(ALERT_DELETED_ARTICLE)(dispatch);
+      clearAlert(ALERT)(dispatch);
     }
   } catch (err) {
     console.error(err);
@@ -343,7 +334,7 @@ export const fetchDashboardDetails = () => async (dispatch) => {
 export const submitBio = (userID, bioDetails) => async (dispatch) => {
   const token = sessionStorage.getItem("jwtToken");
   dispatch({
-    type: ALERT_SUBMITTING_BIO,
+    type: ALERT,
     payload: {
       message: [{ msg: "Submitting bio, please wait..." }],
       variant: "warning"
@@ -382,7 +373,7 @@ export const submitBio = (userID, bioDetails) => async (dispatch) => {
         }
       });
 
-      clearAlert(ALERT_SUBMITTING_BIO)(dispatch);
+      clearAlert(ALERT)(dispatch);
     } catch (err) {
       console.error(err);
     }
@@ -394,19 +385,19 @@ export const submitBio = (userID, bioDetails) => async (dispatch) => {
       }
     });
 
-    clearAlert(ALERT_SUBMITTING_BIO)(dispatch);
+    clearAlert(ALERT)(dispatch);
   }
 };
 
 export const searchArticles = (query) => async (dispatch) => {
   dispatch({
-    type: ALERT_SEARCHING_ARTICLE,
+    type: ALERT,
     payload: {
       message: [{ msg: "Searching, please wait..." }],
       variant: "warning"
     }
   });
-  clearAlert(ALERT_SEARCHING_ARTICLE)(dispatch);
+  clearAlert(ALERT)(dispatch);
   const response = await axios.get(`/api/articles?q=${query}`);
   dispatch({
     type: SEARCH_ARTICLES,

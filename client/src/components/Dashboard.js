@@ -41,7 +41,7 @@ const Dashboard = ({ dashboard, fetchDashboardDetails, history }) => {
             <img src={user.avatar} style={{ maxWidth: "100%" }} />
           </div>
           <div className="col-6">
-            {user.name ? <p>{user.name}</p> : null}
+            {user.fullName ? <p>{user.fullName}</p> : null}
             {user.bio ? <p>{user.bio}</p> : null}
             <Link className="mx-auto" to="/profile/edit">
               Edit Profile Details
